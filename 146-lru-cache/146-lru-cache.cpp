@@ -1,41 +1,52 @@
 class LRUCache {
-public:
-    int cap = 0;
+private:
+    // Lru Cache list to store key,value pair
+    // least recently used/accessed nodes will be at the end of the cache.
     list<pair<int,int>> cache;
-    unordered_map<int, list<pair<int,int>> :: iterator> mp;
-    LRUCache(int capacity) {
-        cache.clear();
-        mp.clear();
-        cap=capacity;
-    }
-    
-    void addValueToFront(int key,int val)
+    // Key to DLL Node's mapping
+    unordered_map<int,list<pair<int,int>>::iterator> frequentAccessMap;
+    // Max Capacity
+    int maxCap;
+
+    void refreshCache(int key,int val)
     {
-        auto pos = mp[key];
+        auto pos = frequentAccessMap[key];
         cache.erase(pos);
         cache.push_front({key,val});
-        mp[key] = cache.begin();
+        frequentAccessMap[key] = cache.begin();
     }
 
+
+public:
+    LRUCache(int capacity) {
+        cache.clear();
+        frequentAccessMap.clear();
+        maxCap = capacity;
+    }
+    
     int get(int key) {
-        if(mp.find(key) != mp.end())
+        if(frequentAccessMap.count(key))
         {
-            addValueToFront(key,(*mp[key]).second);
-            return (*mp[key]).second;
+            int val = (*frequentAccessMap[key]).second;
+            refreshCache(key,val);
+            return val;
         }
         return -1;
     }
     
-    void put(int key, int value) {
-        if(mp.find(key)!=mp.end())
-            addValueToFront(key,value);
+    void put(int key, int value) 
+    {
+        if(frequentAccessMap.count(key))
+        {
+            refreshCache(key,value);
+        }
         else
         {
             cache.push_front({key,value});
-            mp[key]=cache.begin();
-            if(mp.size()>cap)
+            frequentAccessMap[key] = cache.begin();
+            if(cache.size()>maxCap)
             {
-                mp.erase(cache.back().first);
+                frequentAccessMap.erase(cache.back().first);
                 cache.pop_back();
             }
         }
