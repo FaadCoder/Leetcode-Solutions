@@ -2,19 +2,14 @@ class Solution {
     pair<int,int> longestPalindromeHelper(string &s,int i,int j)
     {
         int maxLen = 0;
-        while(i>=0 and j<s.length())
+        while(i>=0 and j<s.length() and s[i]==s[j])
         {
-            if(s[i]==s[j])
-            {
-                if(i==j)
-                    maxLen++;
-                else
-                    maxLen+=2;
-                i--;
-                j++;
-            }
+            if(i==j)
+                maxLen++;
             else
-                break;
+                maxLen+=2;
+            i--;
+            j++;
         }
         return {i+1,maxLen};
     }
