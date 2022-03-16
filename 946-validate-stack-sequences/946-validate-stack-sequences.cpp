@@ -6,8 +6,10 @@ public:
         for(int ele:pushed)
         {
             st.push(ele);
+            cout<<"push-->"<<ele<<endl;
             while(!st.empty() and st.top()==popped[j])
             {
+                cout<<"pop-->"<<st.top()<<"\n";
                 st.pop();
                 j++;
             }
