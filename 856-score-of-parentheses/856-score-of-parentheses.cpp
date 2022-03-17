@@ -6,19 +6,10 @@ public:
         int lvl = 0;
         for(int idx=0; idx<s.length(); idx++)
         {
-            char currentChar = s[idx];
-            if(currentChar=='(')
+            lvl = lvl + ((s[idx]=='(')?1:-1);
+            if(idx>0 and s[idx]==')' and s[idx-1]=='(')
             {
-                lvl++;
-            }
-            else
-            {
-                lvl--;
-                char prevChar = s[idx-1];
-                if(prevChar=='(')
-                {
-                    score += (1<<lvl);
-                }
+                score += (1<<lvl);
             }
         }
         return score;
