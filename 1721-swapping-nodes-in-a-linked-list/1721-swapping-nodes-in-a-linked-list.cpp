@@ -9,9 +9,10 @@
  * };
  */
 class Solution {
+    
     ListNode *getKthNodeFromStart(ListNode *head, int k)
     {
-        auto kthNodeFromstartNode = head;
+        ListNode *kthNodeFromstartNode = head;
         for(int move = 1; move<k and kthNodeFromstartNode->next; move++)
             kthNodeFromstartNode = kthNodeFromstartNode->next;
         return kthNodeFromstartNode;
@@ -19,8 +20,8 @@ class Solution {
     
     ListNode *getKthNodeFromEnd(ListNode *head, ListNode *kthNodeFromstartNode)
     {
-        auto kthNodeFromEnd = head;
-        auto temp = kthNodeFromstartNode;
+        ListNode *kthNodeFromEnd = head;
+        ListNode *temp = kthNodeFromstartNode;
         while(temp->next)
         {
             temp = temp->next;
@@ -29,15 +30,20 @@ class Solution {
         return kthNodeFromEnd;
     }
     
-    
 public:
     ListNode* swapNodes(ListNode* head, int k) 
     {
         if(!head or !head->next)
             return head;
-        auto kthNodeFromstartNode = getKthNodeFromStart(head,k);
-        auto kthNodeFromEnd = getKthNodeFromEnd(head,kthNodeFromstartNode);
+        
+        // Algorithm: 
+        // Step 1: Get Kth Node From Start.
+        ListNode *kthNodeFromstartNode = getKthNodeFromStart(head,k);
+        // Step 2: Get Kth Node From End.
+        ListNode *kthNodeFromEnd = getKthNodeFromEnd(head,kthNodeFromstartNode);
+        // Step 3: Swap their Values.
         swap(kthNodeFromstartNode->val,kthNodeFromEnd->val);
+        
         return head;
         
     }
