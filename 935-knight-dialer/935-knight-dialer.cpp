@@ -2,7 +2,7 @@ class Solution {
     static const int numberOfRows = 4;
     static const int numberOfCols = 3;
     const int mod = 1e9+7;
-    int dir[8][2] = {{-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}};
+    const int dir[8][2] = {{-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}, {-2, -1}};
     
     int dp[numberOfRows][numberOfCols][5002];
     
@@ -16,14 +16,9 @@ class Solution {
         return ((row==numberOfRows-1) and col!=1);
     }
 
-    bool isCurrentPositionANumericCell(int row,int col)
-    {
-        return !isCurrentPositionANonNumericCell(row,col);
-    }
-
     int kngihtDialerHelper(int row,int col,int n)
     {   
-        if(!isValidMove(row,col) or !isCurrentPositionANumericCell(row,col))
+        if(!isValidMove(row,col) or isCurrentPositionANonNumericCell(row,col))
             return 0;
 
         if(n==1)
