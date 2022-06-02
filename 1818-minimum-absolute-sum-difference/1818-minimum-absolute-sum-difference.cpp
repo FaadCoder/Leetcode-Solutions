@@ -1,6 +1,6 @@
 class Solution
 {
-    const int mod = 1e9+7;
+    const int mod = 1e9 + 7;
     public:
         int minAbsoluteSumDiff(vector<int> &nums1, vector<int> &nums2)
         {
@@ -8,16 +8,16 @@ class Solution
             int numberOfElements = nums1.size();
             int origDiff = 0;
             int maxDecrement = 0;
-            for(int idx = 0; idx<numberOfElements; idx++)
+            for (int idx = 0; idx < numberOfElements; idx++)
             {
-                int currDiff = abs(nums1[idx]-nums2[idx]);
-                origDiff = (origDiff + currDiff)%mod;
+                int currDiff = abs(nums1[idx] - nums2[idx]);
+                origDiff = (origDiff + currDiff) % mod;
                 auto it = treeSet.lower_bound(nums2[idx]);
-                if(it!=treeSet.begin())
+                if (it != treeSet.begin())
                     maxDecrement = max(maxDecrement, currDiff - abs(*prev(it) - nums2[idx]));
-                if(it!=treeSet.end())
+                if (it != treeSet.end())
                     maxDecrement = max(maxDecrement, currDiff - abs(*(it) - nums2[idx]));
             }
-            return (origDiff - maxDecrement + mod)%mod;
+            return (origDiff - maxDecrement + mod) % mod;
         }
 };
