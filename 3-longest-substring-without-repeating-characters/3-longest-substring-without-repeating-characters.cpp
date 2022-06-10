@@ -9,12 +9,17 @@ class Solution
             int longestSubstringLength = 0;
             for (int windowEnd = 0; windowEnd < stringSize; windowEnd++)
             {
-                letterFrequencyMap[s[windowEnd]]++;
+                char charAtWindowEnd = s[windowEnd];
+                letterFrequencyMap[charAtWindowEnd]++;
+
                 while (letterFrequencyMap[s[windowEnd]] > 1 and windowStart <= windowEnd)
                 {
-                    letterFrequencyMap[s[windowStart]] -= 1;
-                    if (letterFrequencyMap[s[windowStart]] <= 0)
-                        letterFrequencyMap.erase(s[windowStart]);
+                    char charAtWindowStart = s[windowStart];
+                    letterFrequencyMap[charAtWindowStart] -= 1;
+
+                    if (letterFrequencyMap[charAtWindowStart] <= 0)
+                        letterFrequencyMap.erase(charAtWindowStart);
+
                     windowStart += 1;
                 }
                 longestSubstringLength = max(longestSubstringLength, windowEnd - windowStart + 1);
