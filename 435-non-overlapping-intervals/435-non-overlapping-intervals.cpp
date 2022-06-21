@@ -9,15 +9,16 @@ class Solution
             {
                 return (a[0] == b[0]) ? (a[1] < b[1]) : (a[0] < b[0]);
 	        });
-            int preEnd = intervals[0][1];
             
-            for (int idx=1; idx<intervals.size();idx++)
+            int preEnd = intervals[0][1];
+
+            for (int idx = 1; idx < intervals.size(); idx++)
             {
-                
+
                 if (intervals[idx][0] < preEnd)
                 {
                     intervalsRemoved += 1;
-                    preEnd = min(preEnd,intervals[idx][1]);
+                    preEnd = min(preEnd, intervals[idx][1]);
                 }
                 else
                 {
