@@ -23,10 +23,10 @@ class Solution
                         triplets.push_back({ nums[idx],
                             nums[startPtr],
                             nums[endPtr] });
-                        while(startPtr < endPtr and nums[startPtr+1]==nums[startPtr])
+                        while (startPtr < endPtr and nums[startPtr + 1] == nums[startPtr])
                             startPtr += 1;
                         startPtr += 1;
-                        while(startPtr < endPtr and nums[endPtr-1]==nums[endPtr])
+                        while (startPtr < endPtr and nums[endPtr - 1] == nums[endPtr])
                             endPtr -= 1;
                         endPtr -= 1;
                     }
@@ -35,7 +35,7 @@ class Solution
                     else
                         endPtr -= 1;
                 }
-                while ((idx < nums.size()-1) and (nums[idx + 1] == nums[idx]))
+                while ((idx < nums.size() - 1) and(nums[idx + 1] == nums[idx]))
                 {
                     idx++;
                 }
@@ -46,5 +46,3 @@ class Solution
             return triplets;
         }
 };
-
-//  -2 0 0 2 2
