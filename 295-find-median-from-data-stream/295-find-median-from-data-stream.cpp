@@ -1,7 +1,7 @@
 class MedianFinder
 {
     priority_queue<int> lowerMaxHeap;
-    priority_queue<int,vector<int>,greater<int>> upperMinHeap;
+    priority_queue<int, vector < int>, greater < int>> upperMinHeap;
 
     void balanceHeaps()
     {
@@ -10,7 +10,7 @@ class MedianFinder
             upperMinHeap.push(lowerMaxHeap.top());
             lowerMaxHeap.pop();
         }
-        else if ((lowerMaxHeap.size() + 1 ) < upperMinHeap.size())
+        else if ((lowerMaxHeap.size() + 1) < upperMinHeap.size())
         {
             lowerMaxHeap.push(upperMinHeap.top());
             upperMinHeap.pop();
@@ -22,7 +22,7 @@ class MedianFinder
         {
             while (!lowerMaxHeap.empty())
                 lowerMaxHeap.pop();
-            
+
             while (!upperMinHeap.empty())
                 upperMinHeap.pop();
         }
@@ -40,10 +40,10 @@ class MedianFinder
 
     double findMedian()
     {
-        if(lowerMaxHeap.empty())
+        if (lowerMaxHeap.empty())
             return 0.0;
         if (lowerMaxHeap.size() == upperMinHeap.size())
-            return (1.0 * upperMinHeap.top() + 1.0 * lowerMaxHeap.top()) / 2.0;
+            return (1.0 *upperMinHeap.top() + 1.0 *lowerMaxHeap.top()) / 2.0;
         return lowerMaxHeap.size() > upperMinHeap.size() ? lowerMaxHeap.top() : upperMinHeap.top();
     }
 };
