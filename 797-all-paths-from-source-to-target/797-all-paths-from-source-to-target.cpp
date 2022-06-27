@@ -1,35 +1,29 @@
-class Solution {
-    vector<vector<int>> paths;
-    
-    void dfs(vector<vector<int>>& graph,vector<int> currentPath,vector<bool> &vis,int src = 0)
+class Solution
+{
+    vector<vector < int>> paths;
+
+    void dfs(vector<vector < int>> &graph, vector< int > currentPath, int src = 0)
     {
-        if(src == graph.size()-1)
+        currentPath.push_back(src);
+        if (src == graph.size() - 1)
         {
             paths.push_back(currentPath);
-            currentPath.clear();
-            currentPath.push_back(0);
-            return;
         }
-        vis[src] = true;
-        for(auto child:graph[src])
+        else
         {
-            if(!vis[child])
+            for (auto child: graph[src])
             {
-                currentPath.push_back(child);
-                dfs(graph,currentPath,vis,child);
-                currentPath.pop_back();
+                dfs(graph, currentPath, child);
             }
         }
-        vis[src] = false;
+        currentPath.pop_back();
     }
-    
-public:
-    vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) 
-    {
-        vector<int> currentPath;
-        currentPath.push_back(0);
-        vector<bool> vis(graph.size(),false);
-        dfs(graph,currentPath,vis);
-        return paths;
-    }
+
+    public:
+        vector<vector < int>> allPathsSourceTarget(vector<vector < int>> &graph)
+        {
+            vector<int> currentPath;
+            dfs(graph, currentPath);
+            return paths;
+        }
 };
