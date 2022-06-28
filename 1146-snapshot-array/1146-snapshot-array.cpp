@@ -1,6 +1,6 @@
 class SnapshotArray {
     int snapCount = 0;
-    map<int,map<int,int>> snapToIdxToElementMap;
+    unordered_map<int,map<int,int>> snapToIdxToElementMap;
 public:
     SnapshotArray(int length) {
         for (int i = 0; i < length; i++) {
@@ -18,7 +18,10 @@ public:
     }
     
     int get(int index, int snap_id) {
-        auto it = snapToIdxToElementMap[index].upper_bound(snap_id); it--;
+        auto it = snapToIdxToElementMap[index].upper_bound(snap_id); 
+        if(it==snapToIdxToElementMap[index].begin())
+            return 0;
+        it--;
         return it->second;
     }
 };
