@@ -12,11 +12,12 @@ public:
         stack<int> q;
         for(string &token:tokens)
         {
-            if(hashMap.count(token))
+            const auto &it = hashMap.find(token);
+            if(it!=hashMap.end())
             {
                 int rhs = q.top();q.pop();
                 int lhs = q.top();q.pop();
-                q.push(hashMap[token](lhs,rhs));
+                q.push(it->second(lhs,rhs));
             }
             else
             {
