@@ -1,45 +1,22 @@
 class Solution {
-    
-    
-    bool isOperator(string &str)
-    {
-        return (str=="+" or str == "-" or str == "*" or str == "/");
-    }
-    
-    int getExpressionResult(int a,int b, string &oper)
-    {
-        int res;
-        if(oper == "+")
-        {
-            res = a + b;
-        }
-        else if(oper == "-")
-        {
-            res = a-b;
-        }
-        else if(oper == "*")
-        {
-            res = a*b;
-        }
-        else
-        {
-            res = a/b;
-        }
-        return res;
-    }
+   unordered_map<string,function<int (int,int)> > hashMap = {
+       {"+",[](int a,int b){ return a+b;}},
+       {"-",[](int a,int b){ return a-b;}},
+       {"*",[](int a,int b){ return a*b;}},
+       {"/",[](int a,int b){ return a/b;}},
+       
+   };
     
 public:
     int evalRPN(vector<string>& tokens) {
         stack<int> q;
         for(string &token:tokens)
         {
-            if(isOperator(token))
+            if(hashMap.count(token))
             {
-                int second = q.top();
-                q.pop();
-                int first = q.top();
-                q.pop();
-                q.push(getExpressionResult(first,second,token));
+                int rhs = q.top();q.pop();
+                int lhs = q.top();q.pop();
+                q.push(hashMap[token](lhs,rhs));
             }
             else
             {
