@@ -1,10 +1,10 @@
 class Solution
 {
-    int getDistance(int idx1,int idx2)
+    int getDistance(int idx1, int idx2)
     {
-        return abs(idx2-idx1) + 1;
+        return abs(idx2 - idx1) + 1;
     }
-    
+
     public:
         int minimumCardPickup(vector<int> &cards)
         {
@@ -12,8 +12,8 @@ class Solution
             int minDist = INT_MAX;
             for (int idx = 0; idx < cards.size(); idx++)
             {
-                if(posMap.count(cards[idx]))
-                    minDist = min(minDist,getDistance(idx,posMap[cards[idx]]));
+                if (posMap.count(cards[idx]))
+                    minDist = min(minDist, getDistance(idx, posMap[cards[idx]]));
                 posMap[cards[idx]] = idx;
             }
 
