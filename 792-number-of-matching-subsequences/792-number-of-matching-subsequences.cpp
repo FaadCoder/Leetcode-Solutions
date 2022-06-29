@@ -1,11 +1,9 @@
 struct Node
 {
     public: int idx;
-    string word;
-    Node(string _word, int _idx)
+    const string& word;
+    Node(const string &_word, int _idx) : word(_word),idx(_idx)
     {
-        word = _word;
-        idx = _idx;
     }
 };
 class Solution
