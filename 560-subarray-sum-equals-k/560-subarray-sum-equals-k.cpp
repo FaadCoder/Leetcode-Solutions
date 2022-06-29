@@ -10,7 +10,9 @@ public:
         for(int num:nums)
         {
             currentSum += num;
-            totalSubarrays += hashMap[currentSum - k];
+            auto it = hashMap.find(currentSum-k);
+            if(it!=hashMap.end())
+                totalSubarrays += it->second;
             hashMap[currentSum]++;
         }
         return totalSubarrays;
