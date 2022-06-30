@@ -51,16 +51,21 @@ public:
     string longestCommonPrefix(vector<string>& strs) {
         if(strs.empty())
             return "";
+        
+        string minLengthString = strs[0];
+        
         Trie trie;
         for(string &str:strs)
         {
+            if(minLengthString.length() > str.length())
+                minLengthString = str;
             trie.addWord(str);
         }
-        string maxString = *max_element(strs.begin(),strs.end());
         
-        if(maxString.empty())
+        
+        if(minLengthString.empty())
             return "";
         
-        return trie.getLongestCommonPrefix(maxString,strs.size());
+        return trie.getLongestCommonPrefix(minLengthString,strs.size());
     }
 };
