@@ -1,29 +1,24 @@
-class Solution
-{
-    public:
-        int lengthOfLongestSubstring(string s)
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char,int> mp;
+        
+        int st = 0;
+        int longestLength = 0;
+        
+        for(int en = 0; en<s.length(); en++)
         {
-            unordered_map<char, int> letterFrequencyMap;
-            int windowStart = 0;
-            int stringSize = (int) s.length();
-            int longestSubstringLength = 0;
-            for (int windowEnd = 0; windowEnd < stringSize; windowEnd++)
+            mp[s[en]]++;
+            while(mp[s[en]]>1)
             {
-                char charAtWindowEnd = s[windowEnd];
-                letterFrequencyMap[charAtWindowEnd]++;
-
-                while (letterFrequencyMap[s[windowEnd]] > 1 and windowStart <= windowEnd)
-                {
-                    char charAtWindowStart = s[windowStart];
-                    letterFrequencyMap[charAtWindowStart] -= 1;
-
-                    if (letterFrequencyMap[charAtWindowStart] <= 0)
-                        letterFrequencyMap.erase(charAtWindowStart);
-
-                    windowStart += 1;
-                }
-                longestSubstringLength = max(longestSubstringLength, windowEnd - windowStart + 1);
+                mp[s[st]]--;
+                if(mp[s[st]]<=0)
+                    mp.erase(s[st]);
+                st++;
             }
-            return longestSubstringLength;
+            longestLength = max(longestLength,en-st+1);
         }
+        
+        return longestLength;
+    }
 };
