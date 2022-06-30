@@ -1,6 +1,7 @@
-struct TrieNode{
+struct TrieNode
+{
     int numberOfWordsEnding;
-    unordered_map<char,TrieNode *> children;
+    unordered_map<char, TrieNode*> children;
     TrieNode()
     {
         numberOfWordsEnding = 0;
@@ -8,64 +9,66 @@ struct TrieNode{
     }
 };
 
-class Trie{
-private:
- TrieNode *root;
-public:  
-    Trie()
-    {
-        root = new TrieNode();
-    }
-    
-    void addWord(string &word)
+class Trie
+{
+    private:
+        TrieNode * root;
+    public:
+        Trie()
+        {
+            root = new TrieNode();
+        }
+
+    void addWord(string & word)
     {
         TrieNode *currPtr = root;
-        for(char &ch:word)
+        for (char &ch: word)
         {
-            if(!currPtr->children.count(ch))
+            if (!currPtr->children.count(ch))
                 currPtr->children[ch] = new TrieNode();
             currPtr = currPtr->children[ch];
             currPtr->numberOfWordsEnding += 1;
         }
     }
-    
-    string getLongestCommonPrefix(string &str,int cnt)
+
+    string getLongestCommonPrefix(string &str, int cnt)
     {
         int idx = 0;
         TrieNode *currPtr = root->children[str[idx]];
-        
+
         string maxString = "";
-        while(idx<str.length() and (currPtr->numberOfWordsEnding == cnt))
+        while (idx < str.length() and(currPtr->numberOfWordsEnding == cnt))
         {
             maxString.push_back(str[idx]);
-            idx+=1;
+            idx += 1;
             currPtr = currPtr->children[str[idx]];
         }
-        
+
         return maxString;
     }
 };
 
-class Solution {
-public:
-    string longestCommonPrefix(vector<string>& strs) {
-        if(strs.empty())
-            return "";
-        
-        string minLengthString = strs[0];
-        
-        Trie trie;
-        for(string &str:strs)
+class Solution
+{
+    public:
+        string longestCommonPrefix(vector<string> &strs)
         {
-            if(minLengthString.length() > str.length())
-                minLengthString = str;
-            trie.addWord(str);
+            if (strs.empty())
+                return "";
+
+            string minLengthString = strs[0];
+
+            Trie trie;
+            for (string &str: strs)
+            {
+                if (minLengthString.length() > str.length())
+                    minLengthString = str;
+                trie.addWord(str);
+            }
+
+            if (minLengthString.empty())
+                return "";
+
+            return trie.getLongestCommonPrefix(minLengthString, strs.size());
         }
-        
-        
-        if(minLengthString.empty())
-            return "";
-        
-        return trie.getLongestCommonPrefix(minLengthString,strs.size());
-    }
 };
