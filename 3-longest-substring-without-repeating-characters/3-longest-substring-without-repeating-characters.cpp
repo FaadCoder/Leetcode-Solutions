@@ -3,8 +3,8 @@ class Solution
     public:
         int lengthOfLongestSubstring(string s)
         {
-            
-            unordered_map<char, int> frequencyHashMap;
+
+            int frequencyHashMap[256] = {0};
 
             int windowStart = 0;
             int longestLength = 0;
@@ -13,15 +13,11 @@ class Solution
             {
                 char charAtWindowEnd = s[windowEnd];
                 frequencyHashMap[charAtWindowEnd]++;
-                
+
                 while (frequencyHashMap[charAtWindowEnd] > 1)
                 {
                     char charAtWindowStart = s[windowStart];
                     frequencyHashMap[charAtWindowStart]--;
-                    
-                    if (frequencyHashMap[charAtWindowStart] <= 0)
-                        frequencyHashMap.erase(charAtWindowStart);
-                    
                     windowStart++;
                 }
                 longestLength = max(longestLength, windowEnd - windowStart + 1);
