@@ -4,10 +4,13 @@ class Solution
         int minMoves2(vector<int> &nums)
         {
             sort(nums.begin(), nums.end());
-            int mid = nums[nums.size() / 2];
+            
             int totalMinMoves = 0;
-            for (int num: nums)
-                totalMinMoves += abs(mid - num);
+            int start = 0;
+            int end = nums.size()-1;
+            
+            while(start < end)
+                totalMinMoves += (nums[end--] - nums[start++]);
             return totalMinMoves;
         }
 };
