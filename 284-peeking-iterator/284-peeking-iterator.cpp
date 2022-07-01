@@ -1,15 +1,15 @@
 /*
- * Below is the interface for Iterator, which is already defined for you.
- * **DO NOT** modify the interface for Iterator.
+ *Below is the interface for Iterator, which is already defined for you.
+ ***DO NOT**modify the interface for Iterator.
  *
- *  class Iterator {
+ *class Iterator {
  *		struct Data;
- * 		Data* data;
- *  public:
+ *		Data* data;
+ *public:
  *		Iterator(const vector<int>& nums);
- * 		Iterator(const Iterator& iter);
+ *		Iterator(const Iterator& iter);
  *
- * 		// Returns the next element in the iteration.
+ *		// Returns the next element in the iteration.
  *		int next();
  *
  *		// Returns true if the iteration has more elements.
@@ -17,35 +17,40 @@
  *	};
  */
 
-class PeekingIterator : public Iterator {
+class PeekingIterator: public Iterator
+{
     int nextElement;
     bool hasNextElement;
-public:
-	PeekingIterator(const vector<int>& nums) : Iterator(nums) {
-	    // Initialize any member here.
-	    // **DO NOT** save a copy of nums and manipulate it directly.
-	    // You should only use the Iterator interface methods.
-	    hasNextElement = Iterator::hasNext();
-        if(hasNextElement)
-            nextElement = Iterator::next();
-	}
-	
-    // Returns the next element in the iteration without advancing the iterator.
-	int peek() {
+    public:
+        PeekingIterator(const vector<int> &nums): Iterator(nums)
+        {
+           	// Initialize any member here.
+           	// **DO NOT**save a copy of nums and manipulate it directly.
+           	// You should only use the Iterator interface methods.
+            hasNextElement = Iterator::hasNext();
+            if (hasNextElement)
+                nextElement = Iterator::next();
+        }
+
+   	// Returns the next element in the iteration without advancing the iterator.
+    int peek()
+    {
         return nextElement;
-	}
-	
-	// hasNext() and next() should behave the same as in the Iterator interface.
-	// Override them if needed.
-	int next() {
-	    int nextElementToReturn = nextElement;
+    }
+
+   	// hasNext() and next() should behave the same as in the Iterator interface.
+   	// Override them if needed.
+    int next()
+    {
+        int nextElementToReturn = nextElement;
         hasNextElement = Iterator::hasNext();
-        if(hasNextElement)
+        if (hasNextElement)
             nextElement = Iterator::next();
         return nextElementToReturn;
-	}
-	
-	bool hasNext() const {
-	    return hasNextElement;
-	}
+    }
+
+    bool hasNext() const
+    {
+        return hasNextElement;
+    }
 };
