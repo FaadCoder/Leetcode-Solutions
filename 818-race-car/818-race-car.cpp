@@ -6,7 +6,7 @@ public:
         if(dp[target] > 0)
             return dp[target];
         
-        int steps = floor(log2(target))+1;
+        int steps = ceil(log2(target+1));
         if(target+1 == (1<<steps))
             dp[target] = steps;
         else
