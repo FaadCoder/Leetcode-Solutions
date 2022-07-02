@@ -12,7 +12,6 @@
 class Solution {
     
     vector<vector<int>> leaves;
-    unordered_map<int,vector<int>> heightToLeavesMap;
     
     int populateLeaves(TreeNode *root)
     {
@@ -22,7 +21,11 @@ class Solution {
         int leftHeight = populateLeaves(root->left);
         int rightHeight = populateLeaves(root->right);
         int currentHeight = 1 + max(leftHeight,rightHeight);
-        heightToLeavesMap[currentHeight].push_back(root->val);
+        
+        if(leaves.size() == currentHeight)
+            leaves.push_back({});
+        
+        leaves[currentHeight].push_back(root->val);
         
         return currentHeight;
     }
@@ -30,12 +33,6 @@ class Solution {
 public:
     vector<vector<int>> findLeaves(TreeNode* root) {
         populateLeaves(root);
-        
-        int heights = heightToLeavesMap.size();
-        for(int height = 0; height<heights; height++)
-        {
-            leaves.push_back(heightToLeavesMap[height]);
-        }
         return leaves;
     }
 };
