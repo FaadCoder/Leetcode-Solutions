@@ -18,21 +18,22 @@
  */
 
 class Solution {
-    unordered_set<string> vis;
+    unordered_map<int,unordered_set<int>> vis;
    
     vector<pair<int,int>> dirs = {{-1,0},{0,1},{1,0},{0,-1}};
     
     void cleanAllCells(Robot &robot,int row = 0,int col = 0,int currentDirection = 0)
     {
         robot.clean();
-        vis.insert(to_string(row)+"|"+to_string(col));
+        vis[row].insert(col);
+        
         for(int dir = 0; dir<4; dir++)
         {
             int nextDir = (currentDirection + dir)%4;
             int nextRow = row + dirs[nextDir].first;
             int nextCol = col + dirs[nextDir].second;
             
-            if(!vis.count(to_string(nextRow)+"|"+to_string(nextCol)) and robot.move())
+            if((!vis.count(nextRow) or !vis[nextRow].count(nextCol)) and robot.move())
             {
                 cleanAllCells(robot,nextRow,nextCol,nextDir);
                 //backTrack
