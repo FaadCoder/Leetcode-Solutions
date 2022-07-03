@@ -39,11 +39,12 @@ class UnionFind
     }
 };
 
-struct Edge{
+struct Edge
+{
     int from;
     int to;
     int cost;
-    Edge(int _from,int _to,int _cost)
+    Edge(int _from, int _to, int _cost)
     {
         from = _from;
         to = _to;
@@ -54,30 +55,29 @@ struct Edge{
 class Solution
 {
     public:
-        int minCostToSupplyWater(int n, vector<int> &wells, vector<vector< int>> &pipes) 
+        int minCostToSupplyWater(int n, vector<int> &wells, vector<vector< int>> &pipes)
         {
             vector<Edge> edges;
-            for(auto &pipe:pipes)
-                edges.push_back(Edge(pipe[0],pipe[1],pipe[2]));
-            
-            for(int well = 0; well<wells.size(); well++)
-                edges.push_back(Edge(0,well+1,wells[well]));
-            
-            sort(edges.begin(),edges.end(),[&](Edge &edge1,Edge &edge2){
+            for (auto &pipe: pipes)
+                edges.push_back(Edge(pipe[0], pipe[1], pipe[2]));
+
+            for (int well = 0; well < wells.size(); well++)
+                edges.push_back(Edge(0, well + 1, wells[well]));
+
+            sort(edges.begin(), edges.end(), [& ](Edge &edge1, Edge &edge2)
+            {
                 return edge1.cost < edge2.cost;
-            });
-            
+	        });
+
             UnionFind dsu(n);
             int minCost = 0;
-            
-            for(Edge &edge:edges)
+
+            for (Edge &edge: edges)
             {
-                if(dsu.unionSet(edge.from,edge.to))
+                if (dsu.unionSet(edge.from, edge.to))
                     minCost += edge.cost;
             }
-            
+
             return minCost;
         }
 };
-
-
