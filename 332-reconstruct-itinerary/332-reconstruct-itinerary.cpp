@@ -9,7 +9,7 @@ class Solution
             return vector<string> (route.rbegin(), route.rend());
         }
 
-    map<string, multiset < string>> targets;
+    unordered_map<string, multiset < string>> targets;
     vector<string> route;
 
     void visit(string airport)
