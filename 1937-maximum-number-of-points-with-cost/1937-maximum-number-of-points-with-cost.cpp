@@ -18,7 +18,6 @@ public:
             for(int col = 1; col<cols; col++)
                 leftMaxDP[col] = max(leftMaxDP[col-1]-1,prev[col]);
             
-            
             rightMaxDP[cols-1] = prev[cols-1];
             for(int col = cols-2;col>=0; col--)
                 rightMaxDP[col] = max(rightMaxDP[col+1]-1,prev[col]);
