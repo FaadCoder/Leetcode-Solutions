@@ -27,6 +27,7 @@ public:
         
         if(freshOranges == 0)
             return 0;
+        
         if(rottenOranges == 0)
             return -1;
         
