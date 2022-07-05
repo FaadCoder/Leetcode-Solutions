@@ -18,7 +18,8 @@ class Solution
                     currentConsecutiveSequenceLength += 1;
                     element += 1;
                 }
-                longestConsecutiveSequenceLength = max(longestConsecutiveSequenceLength, currentConsecutiveSequenceLength);
+                longestConsecutiveSequenceLength = max(longestConsecutiveSequenceLength,
+                                                       currentConsecutiveSequenceLength);
             }
 
             return longestConsecutiveSequenceLength;
