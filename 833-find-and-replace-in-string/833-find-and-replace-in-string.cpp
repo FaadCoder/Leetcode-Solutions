@@ -1,27 +1,19 @@
-class Solution
-{
-    public:
-        string findReplaceString(string s, vector<int> &indices, vector<string> &sources, vector< string > &targets)
-        {
-            vector<pair<int, int>> index;
-
-            for (int idx = 0; idx < indices.size(); idx++)
-                index.push_back({ indices[idx],
-                    idx });
-
-            sort(index.rbegin(), index.rend());
-
-            for (auto idx: index)
-            {
-                int currentIndex = idx.second;
-                string source = sources[currentIndex];
-                string target = targets[currentIndex];
-                if (s.substr(idx.first, source.length()) == source)
-                {
-                    s = s.substr(0, idx.first) + target + s.substr(idx.first + source.length());
-                }
+class Solution {
+public:
+    string findReplaceString(string S, vector<int>& indexes, vector<string>& sources, vector<string>& targets) {
+        unordered_map<int, pair<int, string> > m;
+        for(int i=0; i<indexes.size(); i++)
+            if(S.substr(indexes[i], sources[i].size())==sources[i])
+                m[indexes[i]]=make_pair(sources[i].size(), targets[i]);
+        string ans="";
+        for(int i=0; i<S.size(); i++){
+            if(m.find(i)!=m.end()){
+                ans+=m[i].second;
+                i=i+m[i].first-1;
             }
-
-            return s;
+            else
+                ans+=S[i];
         }
+        return ans;
+    }
 };
