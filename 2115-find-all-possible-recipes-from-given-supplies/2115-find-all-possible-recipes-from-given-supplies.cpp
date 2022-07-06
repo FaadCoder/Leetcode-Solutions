@@ -2,7 +2,7 @@ class Solution {
 public:
     vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
         unordered_map<string,int> indegree;
-        unordered_set<string> vis(supplies.begin(),supplies.end());
+        
         unordered_map<string,unordered_set<string>> graph;
         vector<string> ans;
         
