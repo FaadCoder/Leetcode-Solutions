@@ -1,22 +1,22 @@
 class UnionFind
 {
-private:
+    private:
 
     unordered_map<int, int> parent, size;
     int connectedComponents;
-public:
+    public:
 
-    UnionFind(int sets)
-    {
-        connectedComponents = sets;
-        parent.clear();
-        size.clear();
-        for (int set = 0; set<= sets; set++)
+        UnionFind(int sets)
         {
-            parent[set] = set;
-            size[set] = 1;
+            connectedComponents = sets;
+            parent.clear();
+            size.clear();
+            for (int set = 0; set<= sets; set++)
+            {
+                parent[set] = set;
+                size[set] = 1;
+            }
         }
-    }
 
     int findParent(int element)
     {
@@ -48,16 +48,17 @@ public:
 class Solution
 {
     public:
-        vector<int> findRedundantConnection(vector<vector < int>> &edges) {
+        vector<int> findRedundantConnection(vector<vector < int>> &edges)
+        {
             vector<int> edgeToRemove;
             UnionFind unionFind(edges.size());
-            
-            for(auto &edge:edges)
+
+            for (auto &edge: edges)
             {
-                if(!unionFind.unionSet(edge[0],edge[1]))
+                if (!unionFind.unionSet(edge[0], edge[1]))
                     edgeToRemove = edge;
             }
-            
+
             return edgeToRemove;
         }
 };
