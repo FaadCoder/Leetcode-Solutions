@@ -13,7 +13,6 @@ class Solution
             for (int row = 0; row < rows; row++)
             {
                 cursor += cols;
-                cout << row << " " << sentenceStringWithSpaces[cursor % combinedSentenceStringLength] << endl;
                 if (sentenceStringWithSpaces[cursor % combinedSentenceStringLength] == ' ')
                     cursor++;
                 else
