@@ -31,7 +31,7 @@ class Solution
         {
             int low = 0, high = 1;
             while (reader.get(high) < target)
-                high *= 2;
+                high <<= 1;
             return getIndex(low, high, target, reader);
         }
 };
