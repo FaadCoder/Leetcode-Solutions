@@ -1,35 +1,49 @@
-class MyCalendar
-{
-    map<int, int> bookingIntervalMap;
-    bool isOverlapping(int start1,int end1,int start2,int end2)
+class MyCalendar {
+    // Using Self Balanced Ordered Tree to find out lower_bound quickly.
+    map<int,int> startToEndMap;
+    
+    bool intervalsNotOverlapping(int start,int end,int queryStart,int queryEnd)
     {
-        return !(start2>=end1 or start1>=end2);
+        return (queryStart>=end or start>=queryEnd);
     }
-    public:
-        MyCalendar()
-        {
-            bookingIntervalMap.clear();
-        }
-
-    bool book(int start, int end)
+    
+public:
+    MyCalendar() {
+        startToEndMap.clear();  
+    }
+    
+    bool book(int start, int end) 
     {
-        auto lowerBound = bookingIntervalMap.lower_bound(start);
-        if(lowerBound!=bookingIntervalMap.end() and lowerBound->first<end)
-            return false;
-        
-        if(lowerBound!=bookingIntervalMap.begin())
+        auto upperBound = startToEndMap.upper_bound(start);
+        // cout<<start<<" "<<end<<" --> "<<lowerBound->second<<" "<<lowerBound->first<<endl;
+        if(upperBound == startToEndMap.end() or intervalsNotOverlapping(upperBound->second,upperBound->first,start,end))
         {
-            --lowerBound;
-            if(start<lowerBound->second)
-                return false;
+            if(upperBound!=startToEndMap.begin())
+            {
+                upperBound--;
+                if(intervalsNotOverlapping(upperBound->second,upperBound->first,start,end))
+                {
+                    startToEndMap[end] = start;
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                startToEndMap[end] = start;
+                return true;
+            }
         }
-        bookingIntervalMap[start] = end;
-        return true;
+        return false;
+        
     }
 };
 
 /**
- *Your MyCalendar object will be instantiated and called as such:
- *MyCalendar* obj = new MyCalendar();
- *bool param_1 = obj->book(start,end);
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
  */
