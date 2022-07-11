@@ -4,9 +4,10 @@ class Solution
         bool validTicTacToe(vector<string> &board)
         {
             int turns = 0;
-            int row[3] = { 0
-            }, col[3] = { 0
-            }, diag = 0, antiDiag = 0;
+            int row[3] = { 0 };
+            int col[3] = { 0 };
+            int diag = 0;
+            int antiDiag = 0;
 
             int rows = board.size();
 
@@ -40,13 +41,13 @@ class Solution
             int xWin = (row[0] == 3 or row[1] == 3 or row[2] == 3 or col[0] == 3 or col[1] == 3 or col[2] == 3 or diag == 3 or antiDiag == 3);
 
             int oWin = (row[0] == -3 or row[1] == -3 or row[2] == -3 or col[0] == -3 or col[1] == -3 or col[2] == -3 or diag == -3 or antiDiag == -3);
-            
-            if((turns==0 and xWin) or (turns==1 and oWin))
+
+            if ((turns == 0 and xWin) or(turns == 1 and oWin))
                 return false;
-            
-            if(oWin and xWin)
+
+            if (oWin and xWin)
                 return false;
-            
-            return (turns == 0 or turns==1);
+
+            return (turns == 0 or turns == 1);
         }
 };
