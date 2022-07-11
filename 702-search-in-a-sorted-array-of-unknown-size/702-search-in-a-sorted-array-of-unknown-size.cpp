@@ -31,7 +31,7 @@ class Solution
         {
             int low = 0, high = 1;
             int index = getIndex(low, high, target, reader);
-            while (index == -1 and reader.get(high) != INT_MAX)
+            while (index == -1 and reader.get(high) < target)
             {
                 high *= 2;
                 index = getIndex(low, high, target, reader);
