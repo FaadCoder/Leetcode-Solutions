@@ -30,12 +30,8 @@ class Solution
         int search(const ArrayReader &reader, int target)
         {
             int low = 0, high = 1;
-            int index = getIndex(low, high, target, reader);
-            while (index == -1 and reader.get(high) < target)
-            {
+            while (reader.get(high) < target)
                 high *= 2;
-                index = getIndex(low, high, target, reader);
-            }
-            return index;
+            return getIndex(low, high, target, reader);
         }
 };
