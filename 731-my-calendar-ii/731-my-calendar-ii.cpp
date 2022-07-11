@@ -1,21 +1,23 @@
-class MyCalendarTwo {
-    
-    map<int,int> lineSweepingMap;
-    
-    
-public:
-    MyCalendarTwo() {
-        lineSweepingMap.clear();
-    }
-    
-    bool book(int start, int end) {
+class MyCalendarTwo
+{
+
+    map<int, int> lineSweepingMap;
+
+    public:
+        MyCalendarTwo()
+        {
+            lineSweepingMap.clear();
+        }
+
+    bool book(int start, int end)
+    {
         lineSweepingMap[start]++;
         lineSweepingMap[end]--;
         int booked = 0;
-        for(auto it:lineSweepingMap)
+        for (auto it: lineSweepingMap)
         {
             booked += it.second;
-            if(booked == 3)
+            if (booked == 3)
             {
                 lineSweepingMap[start]--;
                 lineSweepingMap[end]++;
@@ -27,9 +29,9 @@ public:
 };
 
 /**
- * Your MyCalendarTwo object will be instantiated and called as such:
- * MyCalendarTwo* obj = new MyCalendarTwo();
- * bool param_1 = obj->book(start,end);
+ *Your MyCalendarTwo object will be instantiated and called as such:
+ *MyCalendarTwo* obj = new MyCalendarTwo();
+ *bool param_1 = obj->book(start,end);
  */
 
 /*
@@ -38,8 +40,5 @@ public:
                                       50-------------60
         10-------------------------40
 5-----------15
-
-
-
 
 */
