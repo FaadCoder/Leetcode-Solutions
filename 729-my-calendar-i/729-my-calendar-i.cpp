@@ -21,21 +21,12 @@ public:
             if(upperBound!=startToEndMap.begin())
             {
                 upperBound--;
-                if(intervalsNotOverlapping(upperBound->second,upperBound->first,start,end))
-                {
-                    startToEndMap[end] = start;
-                    return true;
-                }
-                else
-                {
+                if(!intervalsNotOverlapping(upperBound->second,upperBound->first,start,end))
                     return false;
-                }
             }
-            else
-            {
-                startToEndMap[end] = start;
-                return true;
-            }
+
+            startToEndMap[end] = start;
+            return true;
         }
         return false;
         
