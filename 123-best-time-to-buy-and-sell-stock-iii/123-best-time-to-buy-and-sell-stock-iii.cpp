@@ -1,29 +1,19 @@
-class Solution
-{
-    int dp[100002][2][3];
-    int getMaxProfit(vector<int> &prices, int idx = 0, int currentAsk = 0, int transactions = 0)
-    {
-        if (transactions > 2)
-            return INT_MIN / 2;
-
-        if (dp[idx][currentAsk][transactions] != -1)
-            return dp[idx][currentAsk][transactions];
-
-        if (idx >= prices.size())
-            return 0;
-
-        if (currentAsk == 0)
-        {
-            return dp[idx][currentAsk][transactions] = max(getMaxProfit(prices, idx + 1, 0, transactions), getMaxProfit(prices, idx + 1, 1, transactions) - prices[idx]);
+class Solution {
+public:
+    int maxProfit(vector<int>& v) {
+        if(v.empty()) return 0;
+        
+        int s0,s1,s2,s3,s4;
+        s0=0;
+        s1=s2=s3=s4=INT_MIN;
+        
+        for(int p:v){
+            s1=max(s1,s0-p);
+            s2=max(s2,s1+p);
+            s3=max(s3,s2-p);
+            s4=max(s4,s3+p);
         }
-
-        return dp[idx][currentAsk][transactions] = max(getMaxProfit(prices, idx + 1, 1, transactions), getMaxProfit(prices, idx + 1, 0, transactions + 1) + prices[idx]);
+        
+        return s4;
     }
-
-    public:
-        int maxProfit(vector<int> &prices)
-        {
-            memset(dp, -1, sizeof(dp));
-            return getMaxProfit(prices);
-        }
 };
