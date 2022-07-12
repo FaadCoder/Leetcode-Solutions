@@ -1,7 +1,7 @@
 class WordDistance
 {
-    unordered_map<string,unordered_map<string,int>> dp;
-    
+    unordered_map<string, unordered_map<string, int>> dp;
+
     unordered_map<string, vector < int>> hashMap;
     public:
         WordDistance(vector<string> &wordsDict)
@@ -12,7 +12,7 @@ class WordDistance
 
     int shortest(string word1, string word2)
     {
-        if(dp.count(word1) and dp[word1].count(word2))
+        if (dp.count(word1) and dp[word1].count(word2))
             return dp[word1][word2];
         int shortestDistance = INT_MAX;
         int i = 0, j = 0;
