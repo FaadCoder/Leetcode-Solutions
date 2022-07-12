@@ -27,40 +27,41 @@
  *     const vector<NestedInteger> &getList() const;
  * };
  */
-class Solution {
-    int getSum(vector<NestedInteger>& nestedList,int sum=0)
+class Solution
+{
+    int getSum(vector<NestedInteger> &nestedList, int sum = 0)
     {
         int weightedSum = 0;
         int levelSum = 0;
         queue<NestedInteger> bfsQueue;
-        for(NestedInteger &nestedInteger:nestedList)
+        for (NestedInteger &nestedInteger: nestedList)
             bfsQueue.push(nestedInteger);
-        
-        while(!bfsQueue.empty())
+
+        while (!bfsQueue.empty())
         {
             int size = bfsQueue.size();
-            
-            while(size-- > 0)
+
+            while (size-- > 0)
             {
                 auto front = bfsQueue.front();
                 bfsQueue.pop();
-                if(front.isInteger())
+                if (front.isInteger())
                     levelSum += front.getInteger();
                 else
                 {
-                    for(NestedInteger &nestedInteger:front.getList())
+                    for (NestedInteger &nestedInteger: front.getList())
                         bfsQueue.push(nestedInteger);
                 }
-                
             }
             weightedSum += levelSum;
         }
-        
+
         return weightedSum;
     }
-    
-public:
-    int depthSumInverse(vector<NestedInteger>& nestedList) {
-        return getSum(nestedList);
-    }
+
+    public:
+        int depthSumInverse(vector<NestedInteger> &nestedList)
+        {
+            return getSum(nestedList);
+        }
 };
