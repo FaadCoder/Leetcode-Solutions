@@ -29,39 +29,34 @@
  */
 class Solution
 {
-    int getSum(vector<NestedInteger> &nestedList, int sum = 0)
+    int maxDepth = 1;
+    int sumOfIntegers = 0;
+    
+    int getSum(vector<NestedInteger> &nestedList, int level=1)
     {
-        int weightedSum = 0;
-        int levelSum = 0;
-        queue<NestedInteger> bfsQueue;
-        for (NestedInteger &nestedInteger: nestedList)
-            bfsQueue.push(nestedInteger);
-
-        while (!bfsQueue.empty())
+        if(nestedList.empty())
+            return 0;
+        int sum = 0;
+        maxDepth = max(maxDepth,level);
+        for(NestedInteger &nestedInteger:nestedList)
         {
-            int size = bfsQueue.size();
-
-            while (size-- > 0)
+            if(nestedInteger.isInteger())
             {
-                auto front = bfsQueue.front();
-                bfsQueue.pop();
-                if (front.isInteger())
-                    levelSum += front.getInteger();
-                else
-                {
-                    for (NestedInteger &nestedInteger: front.getList())
-                        bfsQueue.push(nestedInteger);
-                }
+                maxDepth = max(maxDepth,level);
+                sum+=(level*nestedInteger.getInteger());
+                sumOfIntegers += nestedInteger.getInteger();
             }
-            weightedSum += levelSum;
-        }
+            else
+                sum+=getSum(nestedInteger.getList(),level+1);
 
-        return weightedSum;
+        }
+        return sum;
     }
 
     public:
         int depthSumInverse(vector<NestedInteger> &nestedList)
         {
-            return getSum(nestedList);
+            int weightedSum = getSum(nestedList);
+            return (maxDepth+1)*(sumOfIntegers)-weightedSum;
         }
 };
