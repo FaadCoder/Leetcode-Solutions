@@ -1,31 +1,39 @@
-class Solution {
-public:
-    vector<int> searchRange(vector<int>& nums, int target)
-    {
-        vector<int> ans;
-        auto it = lower_bound(nums.begin(),nums.end(),target);
-        if(it==nums.end() or *it!=target)
+class Solution
+{
+    public:
+        int search(vector<int> &nums, int target, bool left)
         {
-            ans.push_back(-1);
-            ans.push_back(-1);
-        }
-        else
-        {
-            ans.push_back(it-nums.begin());
-            auto it2 = upper_bound(nums.begin(),nums.end(),target);
-            if(it2==nums.begin())
+            int low = 0;
+            int high = nums.size();
+
+            while (low < high)
             {
-                ans.push_back(-1);
-            }
-            else
-            {
-                --it2;
-                if(*it2==target)
-                    ans.push_back(it2-nums.begin());
+                int mid = low + (high - low) / 2;
+
+                if (target < nums[mid] || (left && nums[mid] == target))
+                {
+                    high = mid;
+                }
                 else
-                    ans.push_back(-1);
+                {
+                    low = mid + 1;
+                }
             }
+
+            return low;
         }
-        return ans;
+
+    vector<int> searchRange(vector<int> &nums, int target)
+    {
+        int left = search(nums, target, true);
+        int right = search(nums, target, false);
+
+        if (left == nums.size() || nums[left] != target)
+            return { -1,
+                -1 };
+        return {
+            left,
+            right - 1
+        };
     }
 };
