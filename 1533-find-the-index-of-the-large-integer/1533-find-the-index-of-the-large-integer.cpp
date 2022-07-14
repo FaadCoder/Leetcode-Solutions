@@ -19,7 +19,7 @@ public:
     int getIndex(ArrayReader &reader) {
         int low = 0,high = reader.length()-1;
         
-        while(low<high)
+        while(low<=high)
         {
             int mid = low+(high-low)/2;
             int currentLen = high-low+1;
