@@ -1,11 +1,9 @@
 class Solution
 {
-    void populateShortestDistance(vector<int> &colors,
-        int color,
-        unordered_map<int, unordered_map<int, int>> &idxToColorShortestDistanceValue)
+    int numberOfElements;
+    vector<int> getShortestDistanceFromLeft(vector<int> &colors, int color)
     {
-        int numberOfElements = colors.size();
-        vector<int> left(numberOfElements, -1), right(numberOfElements, -1);
+        vector<int> left(colors.size(), -1);
 
         left[0] = (colors[0] == color) ? 0 : -1;
 
@@ -16,8 +14,15 @@ class Solution
             else
                 left[colorIdx] = (left[colorIdx - 1] == -1) ? -1 : 1 + left[colorIdx - 1];
         }
+        
+        return left;
+    }
+    
+    vector<int> getShortestDistanceFromRight(vector<int> &colors, int color)
+    {
+        vector<int> right(numberOfElements, -1);;
 
-        right[numberOfElements - 1] = (colors.back() == color) ? 0 : -1;
+         right[numberOfElements - 1] = (colors.back() == color) ? 0 : -1;
 
         for (int colorIdx = numberOfElements - 2; colorIdx >= 0; colorIdx--)
         {
@@ -26,7 +31,17 @@ class Solution
             else
                 right[colorIdx] = (right[colorIdx + 1] == -1) ? -1 : 1 + right[colorIdx + 1];
         }
+        return right;
+    }
 
+    void populateShortestDistance(vector<int> &colors,
+        int color,
+        unordered_map<int, unordered_map<int, int>> &idxToColorShortestDistanceValue)
+    {
+        vector<int> left = getShortestDistanceFromLeft(colors,color);
+        vector<int> right = getShortestDistanceFromRight(colors,color);
+        
+        
         for (int idx = 0; idx < colors.size(); idx++)
         {
             if (left[idx] == -1 or right[idx] == -1)
@@ -35,10 +50,12 @@ class Solution
                 idxToColorShortestDistanceValue[idx][color] = min(left[idx], right[idx]);
         }
     }
+    
+    
     public:
         vector<int> shortestDistanceColor(vector<int> &colors, vector<vector< int>> &queries)
         {
-            int numberOfElements = colors.size();
+            numberOfElements = colors.size();
             unordered_map<int, unordered_map<int, int>> idxToColorShortestDistanceValue;
 
             for (int color = 1; color <= 3; color++)
@@ -63,5 +80,3 @@ class Solution
             return ans;
         }
 };
-
-// idx-> 1,2,3 minDistance;
