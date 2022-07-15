@@ -1,54 +1,3 @@
-class UnionFind
-{
-    unordered_map<int, int> parent, size;
-    int connectedComponents;
-    int maxSize = 0;
-    public:
-
-        UnionFind(int numberOfSets)
-        {
-            maxSize = 0;
-            connectedComponents = numberOfSets;
-            for (int set = 0; set<= numberOfSets; set++)
-                parent[set] = set, size[set] = 1;
-        }
-
-    int findParent(int child)
-    {
-        if (child == parent[child])
-            return child;
-        return parent[child] = findParent(parent[child]);
-    }
-
-    bool unionSet(int set1, int set2)
-    {
-        set1 = findParent(set1);
-        set2 = findParent(set2);
-
-        if (set1 == set2)
-            return false;
-
-        if (size[set1] < size[set2])
-            swap(set1, set2);
-
-        parent[set2] = set1;
-        size[set1] += size[set2];
-        maxSize = max(maxSize, size[set1]);
-        connectedComponents -= 1;
-        return true;
-    }
-
-    int getConnectedComponents()
-    {
-        return connectedComponents;
-    }
-
-    int getMaxSize()
-    {
-        return maxSize;
-    }
-};
-
 class Solution
 {
     int rows, cols;
@@ -63,26 +12,29 @@ class Solution
             -1 }
     };
 
-    int getOneDimensionalValue(int row, int col)
-    {
-        return cols *row + col;
-    }
-
     bool isValidCell(int row, int col)
     {
         return (row >= 0 and row < rows and col >= 0 and col < cols);
     }
 
+    int getMaxArea(int row,int col,vector<vector < int>> &grid)
+    {
+        if(!isValidCell(row,col) or grid[row][col]==0)
+            return 0;
+        grid[row][col] = 0;
+        int totalArea = 0;
+        for(auto &dir:dirs)
+            totalArea += getMaxArea(row+dir[0],col+dir[1],grid);
+        
+        return totalArea + 1;
+    }
+    
     public:
         int maxAreaOfIsland(vector<vector < int>> &grid)
         {
             rows = grid.size();
             cols = grid[0].size();
-            int numberOfCells = rows * cols;
-
-            bool onePresent = false;
-
-            UnionFind unionFind(numberOfCells);
+            int maxArea = 0;
 
             for (int row = 0; row < rows; row++)
             {
@@ -90,21 +42,11 @@ class Solution
                 {
                     if (grid[row][col] == 1)
                     {
-                        onePresent = true;
-                        for (auto &dir: dirs)
-                        {
-                            int newRow = row + dir[0];
-                            int newCol = col + dir[1];
-                            if (isValidCell(newRow, newCol) and grid[newRow][newCol] == 1)
-                            {
-                                unionFind.unionSet(getOneDimensionalValue(row, col), 
-                                                   getOneDimensionalValue(newRow, newCol));
-                            }
-                        }
+                        maxArea = max(maxArea,getMaxArea(row,col,grid));
                     }
                 }
             }
 
-            return onePresent ? max(1, unionFind.getMaxSize()) : 0;
+            return maxArea;
         }
 };
