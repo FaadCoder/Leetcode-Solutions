@@ -18,25 +18,27 @@ public:
 };
 */
 
-class Solution {
-public:
-    Node* findRoot(vector<Node*> tree) {
-        if(tree.empty())
-            return NULL;
-        int nodeAppearOnce = 0;
-        for(auto treeNode:tree)
+class Solution
+{
+    public:
+        Node* findRoot(vector<Node*> tree)
         {
-            nodeAppearOnce ^= treeNode->val;
-            for(auto child:treeNode->children)
+            if (tree.empty())
+                return NULL;
+            int nodeAppearOnce = 0;
+            for (auto treeNode: tree)
             {
-                nodeAppearOnce ^= child->val;
+                nodeAppearOnce ^= treeNode->val;
+                for (auto child: treeNode->children)
+                {
+                    nodeAppearOnce ^= child->val;
+                }
             }
+
+            for (auto treeNode: tree)
+                if (nodeAppearOnce == treeNode->val)
+                    return treeNode;
+
+            return NULL;
         }
-        
-        for(auto treeNode : tree)
-            if(nodeAppearOnce == treeNode->val)
-                return treeNode;
-        
-        return NULL;
-    }
 };
