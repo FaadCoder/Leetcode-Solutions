@@ -42,14 +42,9 @@ class Solution
         {
             UnionFind unionFind(n);
 
-            for (int city1 = threshold+1; city1 <= n; city1++)
-            {
+            for (int city1 = threshold + 1; city1 <= n; city1++)
                 for (int city2 = 2 * city1; city2 <= n; city2 += city1)
-                {
-                    
-                        unionFind.unionSet(city2, city1);
-                }
-            }
+                    unionFind.unionSet(city2, city1);
 
             vector<bool> queryAns;
             for (auto &query: queries)
