@@ -5,7 +5,7 @@ public:
         pascalRows.push_back({1});
         for(int row = 1; row<numRows;row++)
         {
-            auto previousRow = pascalRows.back();
+            vector<int> &previousRow = pascalRows.back();
             vector<int> newRow(row+1);
             newRow[0] = previousRow[0];
             newRow[row] = previousRow.back();
