@@ -11,15 +11,19 @@
  * };
  */
 class Solution {
-    
-    bool isValidFont(string text, int font, int w, int h, FontInfo fontInfo)
+    vector<int> freq;
+    bool isValidFont(int font, int w, int h, FontInfo fontInfo)
     {
         long long int width = 0;
         int height = fontInfo.getHeight(font);
-        
-        for(char &ch:text)
-            width += fontInfo.getWidth(font,ch);
-            
+        if(height>h)
+            return false;
+        for(int ch=0;ch<26;ch++)
+        {
+            width += freq[ch]*fontInfo.getWidth(font,ch+'a');
+            if(width>w)
+                return false;
+        }   
         
         return width<=w and height<=h;
     }
@@ -30,10 +34,15 @@ public:
         int low = 0;
         int high = fonts.size()-1;
         int maxFontRes = -1;
+        freq.resize(26);
+        freq.clear();
+        for(char &ch:text)
+            freq[ch-'a']++;
+        
         while(low<=high)
         {
             int mid = low + ((high-low)>>1);
-            if(isValidFont(text,fonts[mid],w,h,fontInfo))
+            if(isValidFont(fonts[mid],w,h,fontInfo))
             {
                 maxFontRes = fonts[mid];
                 low = mid+1;
