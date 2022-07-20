@@ -1,12 +1,10 @@
 struct Pair
 {
-    string word;
+    const string &word;
     int index;
 
-    Pair(string &_word, int _index)
+    Pair(const string &_word, int _index):word(_word),index(_index)
     {
-        word = _word;
-        index = _index;
     }
 };
 
