@@ -1,43 +1,47 @@
-struct Pair{
+struct Pair
+{
     string word;
     int index;
-    
-    Pair(string &_word,int _index){
+
+    Pair(string &_word, int _index)
+    {
         word = _word;
         index = _index;
     }
 };
 
-class Solution {
-public:
-    int numMatchingSubseq(string s, vector<string>& words) {
-        unordered_map<char,vector<Pair>> charToWordsHashMap;
-        int index = 0;
-        for(string &word:words)
-            charToWordsHashMap[word[0]].push_back(Pair(word,0));
-        
-        int matchingSubsequences = 0;
-        
-        for(char &ch:s)
+class Solution
+{
+    public:
+        int numMatchingSubseq(string s, vector<string> &words)
         {
-            if(charToWordsHashMap.count(ch))
+            unordered_map<char, vector < Pair>> charToWordsHashMap;
+            int index = 0;
+            for (string &word: words)
+                charToWordsHashMap[word[0]].push_back(Pair(word, 0));
+
+            int matchingSubsequences = 0;
+
+            for (char &ch: s)
             {
-                vector<Pair> wordsStartingWithCurrentChar = charToWordsHashMap[ch];
-                charToWordsHashMap[ch].clear();
-                
-                for(Pair &wordPair:wordsStartingWithCurrentChar)
+                if (charToWordsHashMap.count(ch))
                 {
-                    wordPair.index++;
-                    if(wordPair.index == wordPair.word.length())
-                        matchingSubsequences+=1;
-                    else
+                    vector<Pair> wordsStartingWithCurrentChar = charToWordsHashMap[ch];
+                    charToWordsHashMap[ch].clear();
+
+                    for (Pair &wordPair: wordsStartingWithCurrentChar)
                     {
-                        charToWordsHashMap[wordPair.word[wordPair.index]].push_back(wordPair);
+                        wordPair.index++;
+                        if (wordPair.index == wordPair.word.length())
+                            matchingSubsequences += 1;
+                        else
+                        {
+                            charToWordsHashMap[wordPair.word[wordPair.index]].push_back(wordPair);
+                        }
                     }
                 }
             }
+
+            return matchingSubsequences;
         }
-        
-        return matchingSubsequences;
-    }
 };
