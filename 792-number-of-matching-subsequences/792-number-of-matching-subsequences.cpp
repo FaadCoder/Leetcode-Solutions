@@ -34,7 +34,7 @@ class Solution
                             matchingSubsequences += 1;
                         else
                         {
-                            charToWordsHashMap[wordPair.word[wordPair.index]].push_back(wordPair);
+                            charToWordsHashMap[wordPair.word[wordPair.index]].push_back(move(wordPair));
                         }
                     }
                 }
