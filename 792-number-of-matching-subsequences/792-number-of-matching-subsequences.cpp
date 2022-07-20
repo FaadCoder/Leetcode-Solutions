@@ -1,36 +1,43 @@
-struct Node
-{
-    public: int idx;
-    const string &word;
-    Node(const string &_word, int _idx): word(_word),
-    idx(_idx) {}
+struct Pair{
+    string word;
+    int index;
+    
+    Pair(string &_word,int _index){
+        word = _word;
+        index = _index;
+    }
 };
-class Solution
-{
-    public:
-        int numMatchingSubseq(string s, vector<string> &words)
+
+class Solution {
+public:
+    int numMatchingSubseq(string s, vector<string>& words) {
+        unordered_map<char,vector<Pair>> charToWordsHashMap;
+        int index = 0;
+        for(string &word:words)
+            charToWordsHashMap[word[0]].push_back(Pair(word,0));
+        
+        int matchingSubsequences = 0;
+        
+        for(char &ch:s)
         {
-            vector<Node> mp[26];
-            int ans = 0;
-
-            for (string &word: words)
-                mp[word[0] - 'a'].push_back(Node(word, 0));
-
-            for (char &ch: s)
+            if(charToWordsHashMap.count(ch))
             {
-                vector<Node> values = mp[ch - 'a'];
-                mp[ch - 'a'].clear();
-
-                for (Node &value: values)
+                vector<Pair> wordsStartingWithCurrentChar = charToWordsHashMap[ch];
+                charToWordsHashMap[ch].clear();
+                
+                for(Pair &wordPair:wordsStartingWithCurrentChar)
                 {
-                    value.idx += 1;
-                    if (value.idx == value.word.size())
-                        ans += 1;
+                    wordPair.index++;
+                    if(wordPair.index == wordPair.word.length())
+                        matchingSubsequences+=1;
                     else
-                        mp[value.word[value.idx] - 'a'].push_back(value);
+                    {
+                        charToWordsHashMap[wordPair.word[wordPair.index]].push_back(wordPair);
+                    }
                 }
             }
-
-            return ans;
         }
+        
+        return matchingSubsequences;
+    }
 };
