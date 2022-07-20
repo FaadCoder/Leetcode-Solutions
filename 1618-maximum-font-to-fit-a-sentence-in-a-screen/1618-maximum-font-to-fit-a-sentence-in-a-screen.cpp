@@ -26,7 +26,6 @@ class Solution {
     
 public:
     int maxFont(string text, int w, int h, vector<int>& fonts, FontInfo fontInfo) {
-        sort(begin(fonts),end(fonts));
         
         int low = 0;
         int high = fonts.size()-1;
