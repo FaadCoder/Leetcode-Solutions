@@ -16,7 +16,7 @@ class Solution
             unordered_map<char, vector < Pair>> charToWordsHashMap;
             int index = 0;
             for (string &word: words)
-                charToWordsHashMap[word[0]].push_back(Pair(word, 0));
+                charToWordsHashMap[word[0]].emplace_back(Pair(word, 0));
 
             int matchingSubsequences = 0;
 
