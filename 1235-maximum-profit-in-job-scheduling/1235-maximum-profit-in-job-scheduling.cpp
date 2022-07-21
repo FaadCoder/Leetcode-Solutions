@@ -1,6 +1,6 @@
 class Solution {
     int dp[50001];
-    int getMaxProfit(vector<vector<int>> &events,int idx=0)
+    int getMaxProfit(vector<vector<int>> &events,vector<int> &startTime, int idx=0)
     {
         if(idx>=events.size())
             return 0;
@@ -8,13 +8,9 @@ class Solution {
         if(dp[idx]!=-1)
             return dp[idx];
         
-        int nextIdx = idx;
+        int nextIdx = lower_bound(begin(startTime)+idx,end(startTime),events[idx][1]) - startTime.begin();
         
-        for(;nextIdx<events.size();nextIdx++)
-            if(events[idx][1]<=events[nextIdx][0])
-                break;
-        
-        return dp[idx] = max(getMaxProfit(events,idx+1),events[idx][2]+getMaxProfit(events,nextIdx));
+        return dp[idx] = max(getMaxProfit(events,startTime,idx+1),events[idx][2]+getMaxProfit(events,startTime,nextIdx));
     }
     
 public:
@@ -26,7 +22,7 @@ public:
             events.push_back({startTime[idx],endTime[idx],profit[idx]});    
         
         sort(events.begin(),events.end());
-        
-        return getMaxProfit(events);
+        sort(startTime.begin(),startTime.end());
+        return getMaxProfit(events,startTime);
     }
 };
