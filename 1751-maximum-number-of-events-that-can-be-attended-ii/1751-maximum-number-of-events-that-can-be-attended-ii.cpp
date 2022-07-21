@@ -9,10 +9,9 @@ class Solution {
         if(dp[idx][k]!=-1)
             return dp[idx][k];
         
-        int nextIdx = idx;
-        for(;nextIdx<events.size();nextIdx++)
-            if(events[nextIdx][0]>events[idx][1])
-                break;
+        vector<int> temp = {events[idx][1],INT_MAX,INT_MAX};
+        
+        int nextIdx = upper_bound(events.begin()+idx,events.end(),temp)-events.begin();
         return dp[idx][k] = max(getMaxValue(events,k,dp,idx+1), events[idx][2]+getMaxValue(events,k-1,dp,nextIdx));
         
     }
