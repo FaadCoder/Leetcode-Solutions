@@ -1,57 +1,68 @@
+struct MinHeapNode{
+    int x,y,height;
+    MinHeapNode(int _x,int _y,int _height):x(_x),y(_y),height(_height){}
+};
+
+struct Compare{
+   bool operator()(MinHeapNode &node1,MinHeapNode &node2){
+       return node1.height > node2.height;
+   }  
+};
+
 class Solution {
+    int rows,cols;
+    vector<pair<int,int>> dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+    
+    bool isValid(int row,int col)
+    {
+        return row>=0 and row<rows and col>=0 and col<cols;
+    }
+    
+    int get1D(int row,int col)
+    {
+        return row*cols + col;
+    }
+    
 public:
-    int directions[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-    int minimumEffortPath(vector<vector<int>> &heights) {
-        int row = heights.size();
-        int col = heights[0].size();
-        vector<vector<int>> differenceMatrix(row, vector<int>(col, INT_MAX));
-        differenceMatrix[0][0] = 0;
-        priority_queue<Cell, vector<Cell>, Comparator> queue;
-        vector<vector<bool>> visited(row, vector<bool>(col, false));
-        queue.push(Cell(0, 0, differenceMatrix[0][0]));
-        while (!queue.empty()) {
-            Cell curr = queue.top();
-            queue.pop();
-            visited[curr.x][curr.y] = true;
-            if (curr.x == row - 1 && curr.y == col - 1) return curr.difference;
-            for (auto direction : directions) {
-                int adjacentX = curr.x + direction[0];
-                int adjacentY = curr.y + direction[1];
-                if (isValidCell(adjacentX, adjacentY, row, col) &&
-                    !visited[adjacentX][adjacentY]) {
-                    int currentDifference = abs(heights[adjacentX][adjacentY] -
-                                                heights[curr.x][curr.y]);
-                    int maxDifference = max(currentDifference,
-                                            differenceMatrix[curr.x][curr.y]);
-                    if (differenceMatrix[adjacentX][adjacentY] >
-                        maxDifference) {
-                        differenceMatrix[adjacentX][adjacentY] = maxDifference;
-                        queue.push(Cell(adjacentX, adjacentY, maxDifference));
+    int minimumEffortPath(vector<vector<int>>& heights) {
+        rows = heights.size();
+        cols = heights[0].size();
+        priority_queue<MinHeapNode,vector<MinHeapNode>,Compare> minHeap;
+        
+        minHeap.push(MinHeapNode(0,0,0));
+        vector<vector<int>> maxDiff(rows,vector<int>(cols,INT_MAX));
+        maxDiff[0][0] = 0;
+            
+        while(!minHeap.empty())
+        {
+            auto top = minHeap.top();
+            minHeap.pop();
+            int x = top.x;
+            int y = top.y;
+            int height = top.height;
+            
+            if(height>maxDiff[x][y])
+                continue;
+            
+            if(x==rows-1 and y==cols-1)
+                return maxDiff[x][y];
+            
+            for(auto &dir:dirs)
+            {
+                int newx = x + dir.first;
+                int newy = y + dir.second;
+                if(isValid(newx,newy))
+                {
+                    int newEffort = max(height,abs(heights[x][y]-heights[newx][newy]));
+                    if(maxDiff[newx][newy]>newEffort)
+                    {
+                        minHeap.push(MinHeapNode(newx,newy,newEffort));
+                        maxDiff[newx][newy] = newEffort;
                     }
                 }
             }
         }
-        return differenceMatrix[row - 1][col - 1];
+        
+        return -1;
     }
-
-    bool isValidCell(int x, int y, int row, int col) {
-        return x >= 0 && x <= row - 1 && y >= 0 && y <= col - 1;
-    }
-
-    class Cell {
-    public:
-        int x, y;
-        int difference;
-        Cell(int x, int y, int difference) {
-            this->x = x;
-            this->y = y;
-            this->difference = difference;
-        }
-    };
-
-    struct Comparator {
-        bool operator()(Cell const &p1, Cell const &p2) {
-            return p2.difference < p1.difference;
-        }
-    };
 };
