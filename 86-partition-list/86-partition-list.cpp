@@ -13,48 +13,29 @@ public:
     ListNode* partition(ListNode* head, int x) {
         if(!head)
             return head;
-        ListNode *lessThanXHead = NULL,*greaterThanEqualXHead = NULL;
-        ListNode *lessThanXTail = NULL, *greaterThanEqualXTail = NULL;
-        ListNode *curr = head;
         
-        while(curr)
+        ListNode *dummy1 = new ListNode(0);
+        ListNode *dummy2 = new ListNode(0);
+        ListNode *lessThanX = dummy1;
+        ListNode *greaterEqualX = dummy2;
+        
+        while(head)
         {
-            ListNode *temp = new ListNode(curr->val); 
-            if(curr->val<x)
+            if(head->val<x)
             {
-                if(!lessThanXHead)
-                {
-                    lessThanXHead = temp;
-                    lessThanXTail = temp;
-                }
-                else
-                {
-                    lessThanXTail->next = temp;
-                    lessThanXTail = lessThanXTail->next;
-                }
+                lessThanX->next = head;
+                lessThanX = lessThanX->next;
             }
             else
             {
-                if(!greaterThanEqualXHead)
-                {
-                    greaterThanEqualXHead = temp;
-                    greaterThanEqualXTail = temp;
-                }
-                else
-                {
-                    greaterThanEqualXTail->next = temp;
-                    greaterThanEqualXTail = greaterThanEqualXTail->next;
-                }
+                greaterEqualX->next = head;
+                greaterEqualX = greaterEqualX->next;
             }
-            curr=curr->next;
+            head = head->next;
         }
+        greaterEqualX->next = NULL;
+        lessThanX->next = dummy2->next;
+        return dummy1->next;
         
-        if(!lessThanXHead)
-            return greaterThanEqualXHead;
-        if(!greaterThanEqualXHead)
-            return lessThanXHead;
-        
-        lessThanXTail->next = greaterThanEqualXHead;
-        return lessThanXHead;
     }
 };
