@@ -1,67 +1,60 @@
-struct Edge{
-    int destination;
-    int time;
-    Edge(int _destination, int _time)
-    {
-        destination = _destination;
-        time = _time;
-    }
+struct Pair
+{
+    int node;
+    int cost;
+    Pair(int _node, int _cost): node(_node), cost(_cost) {}
 };
 
-class Solution {
-    
-    void formGraph(vector<vector<int>>& times, int n,vector<Edge> graph[])
+struct Compare
+{
+    bool operator()(Pair &pair1, Pair &pair2)
     {
-        for(auto &time:times)
-           graph[time[0]-1].push_back(Edge(time[1]-1,time[2]));
-    }
-    
-    bool isSignalReceivedByAllNodes(vector<int> &dis,int n)
-    {
-        for(int ele:dis)
+        return pair1.cost > pair2.cost;
+    };
+};
+
+class Solution
+{
+    public:
+        int networkDelayTime(vector<vector < int>> &times, int n, int k)
         {
-            if(ele == INT_MAX)
-                return false;
-        }
-        return true;
-    }
-    
-    int getMaxTimeUsingBfs(vector<Edge> graph[],int k,int n)
-    {
-        queue<int> bfsQueue;
-        vector<int> dis(n,INT_MAX);
-        bfsQueue.push(k);
-        dis[k] = 0;
-        
-        while(!bfsQueue.empty())
-        {
-            int source = bfsQueue.front();
-            bfsQueue.pop();
-            
-            for(Edge child:graph[source])
+
+            vector<pair<int, int>> graph[n];
+            for (auto &time: times)
+                graph[time[0]-1].push_back({ time[1]-1,
+                    time[2] });
+
+            vector<int> dist(n, INT_MAX);
+            dist[k-1] = 0;
+            priority_queue<Pair, vector < Pair>, Compare> minHeap;
+            minHeap.push(Pair(k-1, 0));
+            while (!minHeap.empty())
             {
-                int destination = child.destination;
-                int childTime = child.time;
-                if(dis[destination] > childTime + dis[source])
+                auto top = minHeap.top();
+                minHeap.pop();
+                int node = top.node;
+                int cost = top.cost;
+                if (dist[node] > cost)
+                    continue;
+                for (auto child: graph[node])
                 {
-                    dis[destination] = childTime + dis[source];
-                    bfsQueue.push(destination);
+                    int newDist = cost + child.second;
+                    if (dist[child.first] > newDist)
+                    {
+                        minHeap.push(Pair(child.first, newDist));
+                        dist[child.first] = newDist;
+                    }
                 }
             }
-        }
-        
-        bool didAllNodesReceiveSignal = isSignalReceivedByAllNodes(dis,n);
 
-        return didAllNodesReceiveSignal ? *max_element(dis.begin(),dis.end()) : -1;
-    }
-    
-public:
-    int networkDelayTime(vector<vector<int>>& times, int n, int k) 
-    {
-        vector<Edge> graph[n];
-        formGraph(times,n,graph);
-        int maxTime = getMaxTimeUsingBfs(graph,k-1,n);
-        
-        return maxTime;
-    }
+            int maxTime = INT_MIN;
+            for (int dis: dist)
+            {
+                // cout<<dis<<" ";
+                if (dis == INT_MAX)
+                    return -1;
+                maxTime = max(maxTime, dis);
+            }
+            return maxTime;
+        }
 };
