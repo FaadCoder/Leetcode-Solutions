@@ -47,7 +47,7 @@ class Solution
                     }
 
                    	// Main Line to Avoid TLE
-                    indicesMap.erase(arr[parent]);
+                    indicesMap[arr[parent]].clear();
                 }
                 level++;
             }
