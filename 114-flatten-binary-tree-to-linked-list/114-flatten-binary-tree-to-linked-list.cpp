@@ -10,37 +10,22 @@
  * };
  */
 class Solution {
-    
-    TreeNode *flattenHelper(TreeNode* root)
-    {
-        if(!root)
-            return NULL;
-        
-        TreeNode *leftFlattenSubtree = flattenHelper(root->left);
-        TreeNode *rightFlattenSubtree = flattenHelper(root->right);
-        
-        root->left = NULL;
-        root->right = NULL;
-        
-        root->right = leftFlattenSubtree;
-        if(rightFlattenSubtree)
-        {
-            if(!leftFlattenSubtree)
-                root->right = rightFlattenSubtree;
-            else
-            {
-                TreeNode *ptr = leftFlattenSubtree;
-                while(ptr->right)
-                    ptr=ptr->right;
-                ptr->right = rightFlattenSubtree;
-            }
-        }
-        
-        return root;
-    }
-    
 public:
     void flatten(TreeNode* root) {
-        root = flattenHelper(root);
+        while(root)
+        {
+            TreeNode *leftSubtree = root->left;
+            TreeNode *rightSubtree = root->right;
+            if(leftSubtree)
+            {
+                TreeNode *ptr = leftSubtree;
+                while(ptr and ptr->right)
+                    ptr=ptr->right;
+                ptr->right = rightSubtree;
+                root->left = NULL;
+                root->right = leftSubtree;
+            }
+            root=root->right;
+        }
     }
 };
