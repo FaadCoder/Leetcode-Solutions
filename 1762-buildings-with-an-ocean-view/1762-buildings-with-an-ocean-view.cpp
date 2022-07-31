@@ -5,14 +5,14 @@ public:
         int numberOfBuildings = heights.size();
         vector<int> buildings;
         
-        stack<int> monoStack;
+        int maxHeight = 0;
         
         for(int idx = heights.size()-1; idx>=0; idx--)
         {
-            if(monoStack.empty() or heights[idx]>monoStack.top())
+            if(heights[idx]>maxHeight)
             {
                 buildings.push_back(idx);
-                monoStack.push(heights[idx]);
+                maxHeight = heights[idx];
             }
         }
         reverse(begin(buildings),end(buildings));
