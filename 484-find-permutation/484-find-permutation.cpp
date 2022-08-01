@@ -19,15 +19,6 @@ steps:
 */
 class Solution {
     
-    void reverseVector(vector<int> &permutation, int start, int end)
-    {
-        while(start<end)
-        {
-            swap(permutation[start++],permutation[end--]);
-        }
-    }
-
-    
 public:
     vector<int> findPermutation(string s) {
         vector<int> permutation(s.length()+1);
