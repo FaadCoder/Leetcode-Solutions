@@ -1,15 +1,11 @@
 class Solution {
     unordered_map<int,vector<int>> graph;
-    
     double getProb(int src,int target,int t,vector<bool> &vis)
     {
         if(src!=1 and graph[src].size()==1 or t==0)
             return src==target;
-        
         vis[src] = true;
-        
         double prob = 0;
-        
         for(auto child:graph[src])
         {
             if(!vis[child])
@@ -19,9 +15,7 @@ class Solution {
                 
             }
         }
-        
         return prob;
-        
     }
     
 public:
