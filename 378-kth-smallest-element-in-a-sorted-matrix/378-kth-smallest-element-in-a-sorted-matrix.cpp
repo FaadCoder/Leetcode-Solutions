@@ -1,24 +1,40 @@
-class Solution { // 20 ms, faster than 98.92%
+class Solution {
+    int rows,cols;
+    
+    int countElementsLessThanMid(int mid, vector<vector<int>> &matrix)
+    {
+        int count = 0;
+        int col = cols-1;
+        
+        for(int row = 0; row<rows; row++)
+        {
+            while(col>=0 and matrix[row][col]>mid)
+                col--;
+            count += (col+1);
+        }
+        return count;
+    }
+    
 public:
-    int m, n;
     int kthSmallest(vector<vector<int>>& matrix, int k) {
-        m = matrix.size(), n = matrix[0].size(); // For general, the matrix need not be a square
-        int left = matrix[0][0], right = matrix[m-1][n-1], ans = -1;
-        while (left <= right) {
-            int mid = (left + right) >> 1;
-            if (countLessOrEqual(matrix, mid) >= k) {
+        rows = matrix.size();
+        cols = matrix[0].size();
+        
+        int low = matrix[0].front();
+        int high = matrix[rows-1].back();
+        int ans = -1;
+        while(low<=high)
+        {
+            int mid = low + (high-low)/2;
+            int count = countElementsLessThanMid(mid,matrix);
+            if(count>=k)
+            {
                 ans = mid;
-                right = mid - 1; // try to looking for a smaller value in the left side
-            } else left = mid + 1; // try to looking for a bigger value in the right side
+                high = mid-1;
+            }
+            else
+                low = mid+1;
         }
         return ans;
-    }
-    int countLessOrEqual(vector<vector<int>>& matrix, int x) {
-        int cnt = 0, c = n - 1; // start with the rightmost column
-        for (int r = 0; r < m; ++r) {
-            while (c >= 0 && matrix[r][c] > x) --c;  // decrease column until matrix[r][c] <= x
-            cnt += (c + 1);
-        }
-        return cnt;
     }
 };
