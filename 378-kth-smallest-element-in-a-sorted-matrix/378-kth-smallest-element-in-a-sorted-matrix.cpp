@@ -23,18 +23,17 @@ public:
         int low = matrix[0].front();
         int high = matrix[rows-1].back();
         int ans = -1;
-        while(low<=high)
+        while(low<high)
         {
             int mid = low + (high-low)/2;
             int count = countElementsLessThanMid(mid,matrix);
             if(count>=k)
             {
-                ans = mid;
-                high = mid-1;
+                high = mid;
             }
             else
                 low = mid+1;
         }
-        return ans;
+        return high;
     }
 };
