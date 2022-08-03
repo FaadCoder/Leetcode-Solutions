@@ -14,7 +14,9 @@ public:
     
     bool queryRange(int left, int right) const {
         auto [begin, end] = intervals_.equal_range({ left, right });
+        
         return begin != end && left >= begin->first && right <= begin->second;
+        
     }
     
     void removeRange(int left, int right) {
