@@ -1,41 +1,54 @@
-class MyCalendar
-{
-   	// Using Self Balanced Ordered Tree to find out lower_bound quickly.
-    map<int, int> startToEndMap;
-
-    bool intervalsNotOverlapping(int start, int end, int queryStart, int queryEnd)
+class MyCalendar {
+    map<int,int> endToStartMap;
+    
+    bool isOverlapping(int start1,int end1,int start2,int end2)
     {
-        return (queryStart >= end or start >= queryEnd);
+        return !(start1>=end2 or end1<=start2);
     }
-
-    public:
-        MyCalendar()
-        {
-            startToEndMap.clear();
-        }
-
-    bool book(int start, int end)
-    {
-        auto upperBound = startToEndMap.upper_bound(start);
+    
+public:
+    MyCalendar() {
+        endToStartMap.clear(); 
+    }
+    
+    bool book(int start, int end) {
+        bool didAddTheEvent = false;
         
-        if (upperBound == startToEndMap.end() or intervalsNotOverlapping(upperBound->second, upperBound->first, start, end))
+        if(endToStartMap.empty())
         {
-            if (upperBound != startToEndMap.begin())
+            endToStartMap[end] = start;
+            didAddTheEvent = true;
+        }
+        else
+        {
+            auto upperBound = endToStartMap.upper_bound(start);
+            
+            bool isOverlappingWithUpperBound = false;
+            
+            if(upperBound!=endToStartMap.end())
+            {
+                if(isOverlapping(upperBound->second, upperBound->first, start, end))
+                    isOverlappingWithUpperBound = true;
+            }
+            
+            bool isOverlappingWithLowerBound = false;
+            
+            if(upperBound != endToStartMap.begin())
             {
                 upperBound--;
-                if (!intervalsNotOverlapping(upperBound->second, upperBound->first, start, end))
-                    return false;
+                if(isOverlapping(upperBound->second, upperBound->first, start, end))
+                    isOverlappingWithLowerBound = true;
             }
-
-            startToEndMap[end] = start;
-            return true;
+            didAddTheEvent = !isOverlappingWithUpperBound and !isOverlappingWithLowerBound;
         }
-        return false;
+        if(didAddTheEvent)
+            endToStartMap[end] = start;
+        return didAddTheEvent;
     }
 };
 
 /**
- *Your MyCalendar object will be instantiated and called as such:
- *MyCalendar* obj = new MyCalendar();
- *bool param_1 = obj->book(start,end);
+ * Your MyCalendar object will be instantiated and called as such:
+ * MyCalendar* obj = new MyCalendar();
+ * bool param_1 = obj->book(start,end);
  */
