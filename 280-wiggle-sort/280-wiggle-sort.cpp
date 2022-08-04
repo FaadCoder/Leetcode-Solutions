@@ -1,9 +1,22 @@
 class Solution {
-public: 
+public:
     void wiggleSort(vector<int>& nums) {
-        int n = nums.size();
-        for (int i = 1; i < n; i++)
-            if (((i & 1) && nums[i] < nums[i - 1]) || (!(i & 1) && nums[i] > nums[i - 1]))
-                swap(nums[i], nums[i - 1]);
-    } 
+        
+        for(int idx = 0; idx<nums.size()-1; idx++)
+        {
+            if(idx==0)
+            {
+                if(nums[idx]>nums[idx+1])
+                    swap(nums[idx],nums[idx+1]);
+            }
+            else
+            {
+                if((idx & 1) and nums[idx]<nums[idx+1])
+                    swap(nums[idx],nums[idx+1]);
+                else if(!(idx & 1) and nums[idx]>nums[idx+1])
+                    swap(nums[idx],nums[idx+1]);
+            }
+        }
+        
+    }
 };
