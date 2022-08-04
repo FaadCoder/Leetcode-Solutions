@@ -1,90 +1,115 @@
-struct SegmentTreeNode {
-  int lo;
-  int hi;
-  bool tracked = false;
-  SegmentTreeNode* left;
-  SegmentTreeNode* right;
-  SegmentTreeNode(int lo, int hi, bool tracked, SegmentTreeNode* left = nullptr,
-                  SegmentTreeNode* right = nullptr)
-      : lo(lo), hi(hi), tracked(tracked), left(left), right(right) {}
-  ~SegmentTreeNode() {
-    delete left;
-    delete right;
-    left = nullptr;
-    right = nullptr;
-  }
+struct SegmentTreeNode
+{
+    int low, high;
+    bool tracked;
+    SegmentTreeNode *left, *right;
+    SegmentTreeNode(int _low, int _high, bool _tracked = false, SegmentTreeNode *_left = NULL, SegmentTreeNode *_right = NULL):
+        low(_low), high(_high), tracked(_tracked), left(_left), right(_right) {}
 };
 
-class SegmentTree {
- public:
-  SegmentTree() : root(new SegmentTreeNode(0, 1e9, false)) {}
+class SegmentTree
+{
+    private:
+        SegmentTreeNode * root;
 
-  void addRange(int i, int j) {
-    update(root.get(), i, j, true);
-  }
+    void updateRangeHelper(SegmentTreeNode *root, int start, int end, bool tracked)
+    {
+        if (root->low == start and root->high == end)
+        {
+            root->tracked = tracked;
+            root->left = NULL;
+            root->right = NULL;
+            return;
+        }
 
-  bool queryRange(int i, int j) {
-    return query(root.get(), i, j);
-  }
+        int mid = root->low + (root->high - root->low) / 2;
 
-  void removeRange(int i, int j) {
-    update(root.get(), i, j, false);
-  }
+        if (!root->left)
+        {
+            root->left = new SegmentTreeNode(root->low, mid, root->tracked);
+            root->right = new SegmentTreeNode(mid + 1, root->high, root->tracked);
+        }
 
- private:
-  std::unique_ptr<SegmentTreeNode> root;
+        if (end <= mid)
+            updateRangeHelper(root->left, start, end, tracked);
+        else if (start > mid)
+            updateRangeHelper(root->right, start, end, tracked);
+        else
+        {
+            updateRangeHelper(root->left, start, mid, tracked);
+            updateRangeHelper(root->right, mid + 1, end, tracked);
+        }
 
-  void update(SegmentTreeNode* root, int i, int j, bool tracked) {
-    if (root->lo == i && root->hi == j) {
-      root->tracked = tracked;
-      root->left = nullptr;
-      root->right = nullptr;
-      return;
+        root->tracked = root->left->tracked and root->right->tracked;
     }
-    const int mid = root->lo + (root->hi - root->lo) / 2;
-    if (!root->left) {
-      root->left = new SegmentTreeNode(root->lo, mid, root->tracked);
-      root->right = new SegmentTreeNode(mid + 1, root->hi, root->tracked);
-    }
-    if (j <= mid)
-      update(root->left, i, j, tracked);
-    else if (i > mid)
-      update(root->right, i, j, tracked);
-    else {
-      update(root->left, i, mid, tracked);
-      update(root->right, mid + 1, j, tracked);
-    }
-    root->tracked = root->left->tracked && root->right->tracked;
-  }
 
-  bool query(SegmentTreeNode* root, int i, int j) {
-    if (!root->left)
-      return root->tracked;
-    if (root->lo == i && root->hi == j)
-      return root->tracked;
-    const int mid = root->lo + (root->hi - root->lo) / 2;
-    if (j <= mid)
-      return query(root->left, i, j);
-    if (i > mid)
-      return query(root->right, i, j);
-    return query(root->left, i, mid) && query(root->right, mid + 1, j);
-  }
+    bool queryRangeHelper(SegmentTreeNode *root, int start, int end)
+    {
+        if (!root->left)
+            return root->tracked;
+
+        if (root->low == start and root->high == end)
+            return root->tracked;
+
+        int mid = root->low + (root->high - root->low) / 2;
+
+        if (end <= mid)
+            return queryRangeHelper(root->left, start, end);
+        if (start > mid)
+            return queryRangeHelper(root->right, start, end);
+
+        return queryRangeHelper(root->left, start, mid) and queryRangeHelper(root->right, mid + 1, end);
+    }
+
+    public:
+
+        SegmentTree(int low, int high)
+        {
+            root = new SegmentTreeNode(low, high);
+        }
+
+    void updateRange(int start, int end, bool tracked)
+    {
+        updateRangeHelper(root, start, end, tracked);
+    }
+
+    bool queryRange(int start, int end)
+    {
+        return queryRangeHelper(root, start, end);
+    }
 };
 
-class RangeModule {
- public:
-  void addRange(int left, int right) {
-    tree.addRange(left, right - 1);
-  }
+class RangeModule
+{
 
-  bool queryRange(int left, int right) {
-    return tree.queryRange(left, right - 1);
-  }
+    SegmentTree * tree;
 
-  void removeRange(int left, int right) {
-    tree.removeRange(left, right - 1);
-  }
+    public:
+        RangeModule()
+        {
+            tree = new SegmentTree(1, 1e9);
+        }
 
- private:
-  SegmentTree tree;
+    void addRange(int left, int right)
+    {
+        tree->updateRange(left, right - 1, true);
+    }
+
+    bool queryRange(int left, int right)
+    {
+        return tree->queryRange(left, right - 1);
+    }
+
+    void removeRange(int left, int right)
+    {
+        return tree->updateRange(left, right - 1, false);
+    }
 };
+
+/**
+ *Your RangeModule object will be instantiated and called as such:
+ *RangeModule* obj = new RangeModule();
+ *obj->addRange(left,right);
+ *bool param_2 = obj->queryRange(left,right);
+ *obj->removeRange(left,right);
+ */
