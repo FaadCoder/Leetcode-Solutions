@@ -60,10 +60,33 @@ class Solution {
         
     }
     
+    int getTotalWaysBottomUpSpaceOptimized(int n,int k)
+    {
+        vector<int> curr(k+1,0);
+        vector<int> prev(k+1,0);
+        
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=k;j++)
+            {
+                if(i==j)
+                {
+                    curr[j] = 1;
+                }
+                else
+                {
+                    curr[j] = add(prev[j-1],mul(sub(i,1),prev[j]));
+                }
+            }
+            prev = curr;
+        }
+        return curr[k];
+    }
+    
 public:
     int rearrangeSticks(int n, int k) {
         dp.resize(n+1,vector<int>(k+1,-1));
         
-        return getTotalWaysBottomUp(n,k);
+        return getTotalWaysBottomUpSpaceOptimized(n,k);
     }
 };
