@@ -12,15 +12,15 @@ class Solution
     {
         if (n == 0) return k == 0;
 
-        if(k < 0) return 0;
-        
+        if (k < 0) return 0;
+
         if (dp[n][mx][k] != -1) return dp[n][mx][k];
 
         int totalWays = 0;
 
         for (int num = 1; num <= m; num++)
         {
-            totalWays = add(totalWays, getTotalWays(n - 1, m, k - (mx<num), max(mx,num)));
+            totalWays = add(totalWays, getTotalWays(n - 1, m, k - (mx < num), max(mx, num)));
         }
 
         return dp[n][mx][k] = totalWays;
