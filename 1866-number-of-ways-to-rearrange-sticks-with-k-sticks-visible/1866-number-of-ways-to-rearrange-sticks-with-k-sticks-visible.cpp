@@ -38,11 +38,32 @@ class Solution {
         return dp[n][k] = add(getTotalWays(n-1,k-1),mul(sub(n,1),getTotalWays(n-1,k)));
     }
     
+    int getTotalWaysBottomUp(int n,int k)
+    {
+        vector<vector<int>> cache(n+1,vector<int>(k+1,0));
+        
+        for(int i=1;i<=n;i++)
+        {
+            for(int j=1;j<=k;j++)
+            {
+                if(i==j)
+                {
+                    cache[i][j] = 1;
+                }
+                else
+                {
+                    cache[i][j] = add(cache[i-1][j-1],mul(sub(i,1),cache[i-1][j]));
+                }
+            }
+        }
+        return cache[n][k];
+        
+    }
     
 public:
     int rearrangeSticks(int n, int k) {
         dp.resize(n+1,vector<int>(k+1,-1));
         
-        return getTotalWays(n,k);
+        return getTotalWaysBottomUp(n,k);
     }
 };
