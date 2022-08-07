@@ -10,22 +10,17 @@ class Solution
 
     int getTotalWays(int n, int m, int k, int mx = 0)
     {
-        if (n == 0)
-        {
-            return k == 0;
-        }
+        if (n == 0) return k == 0;
 
-        if (dp[n][mx][k] != -1)
-            return dp[n][mx][k];
+        if(k < 0) return 0;
+        
+        if (dp[n][mx][k] != -1) return dp[n][mx][k];
 
         int totalWays = 0;
 
         for (int num = 1; num <= m; num++)
         {
-            if (num <= mx)
-                totalWays = add(totalWays, getTotalWays(n - 1, m, k, mx));
-            else if (mx < num and k - 1 >= 0)
-                totalWays = add(totalWays, getTotalWays(n - 1, m, k - 1, num));
+            totalWays = add(totalWays, getTotalWays(n - 1, m, k - (mx<num), max(mx,num)));
         }
 
         return dp[n][mx][k] = totalWays;
