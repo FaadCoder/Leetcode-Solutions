@@ -24,10 +24,8 @@ class Solution {
         while(!bfsQueue.empty())
         {
             int nodesAtCurrentLevel = bfsQueue.size();
-            while(nodesAtCurrentLevel>0)
+            while(nodesAtCurrentLevel-->0)
             {
-                nodesAtCurrentLevel-=1;
-                
                 auto [currentDistance, currNode] = bfsQueue.front();
                 bfsQueue.pop();
                 
