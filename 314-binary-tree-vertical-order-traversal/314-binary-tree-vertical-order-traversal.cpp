@@ -45,14 +45,9 @@ class Solution {
         
     }
     
-public:
-    vector<vector<int>> verticalOrder(TreeNode* root) {
-        minDistance = INT_MAX;
-        maxDistance = INT_MIN;
-        populateHorizontalDistances(root);
-        
+    vector<vector<int>> getVerticalOrder()
+    {
         vector<vector<int>> verticalOrderStore;
-        
         for(int dis = minDistance; dis<=maxDistance; dis++)
         {
             if(distanceToNodesMap[dis].size())
@@ -60,5 +55,15 @@ public:
         }
         
         return verticalOrderStore;
+    }
+    
+public:
+    vector<vector<int>> verticalOrder(TreeNode* root) {
+        minDistance = INT_MAX;
+        maxDistance = INT_MIN;
+        
+        populateHorizontalDistances(root);
+        
+        return getVerticalOrder();
     }
 };
