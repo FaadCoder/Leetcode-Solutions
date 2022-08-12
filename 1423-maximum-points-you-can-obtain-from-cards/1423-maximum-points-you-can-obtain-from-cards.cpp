@@ -1,23 +1,26 @@
 class Solution {
 public:
-    int maxScore(vector<int>& cardPoints, int k) 
-    {
-        int numberOfCards = cardPoints.size();
-        int windowSize = numberOfCards - k;
-        int totalSum = accumulate(cardPoints.begin(),cardPoints.end(),0);
-        int currSum = 0;
-        int minSum = INT_MAX;
-        for(int idx = 0; idx<windowSize; idx++)
-            currSum += cardPoints[idx];
-        minSum = min(minSum,currSum);
+    int maxScore(vector<int>& cardPoints, int k) {
+        int totalSize = cardPoints.size();
+        int windowSize = totalSize - k;
         
-        for(int idx = windowSize; idx<numberOfCards; idx++)
+        int totalSum = accumulate(begin(cardPoints),end(cardPoints),0);
+        
+        int currSum = 0;
+        int minScore = INT_MAX;
+        
+        for(int end = 0; end<totalSize; end++)
         {
-            currSum -= cardPoints[idx - windowSize];
-            currSum += cardPoints[idx];
-            minSum = min(minSum,currSum);
+            currSum += cardPoints[end];
+            if(end >= windowSize)
+                currSum -= cardPoints[end - windowSize];
+            
+            if(end >= windowSize-1)
+                minScore = min(minScore, currSum);
+            
         }
         
-        return totalSum - minSum;
+        return totalSum - minScore;
+        
     }
 };
