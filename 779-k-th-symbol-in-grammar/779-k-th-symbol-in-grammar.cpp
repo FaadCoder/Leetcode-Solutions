@@ -3,9 +3,7 @@ class Solution
     public:
         int kthGrammar(int n, int k)
         {
-            if (k == 1)
-                return 0;
-            if (n == 1)
+            if (k == 1 or n == 1)
                 return 0;
 
             int symbols = (1 << (n - 1));
