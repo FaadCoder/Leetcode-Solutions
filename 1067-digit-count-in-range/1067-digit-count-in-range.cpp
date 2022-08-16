@@ -1,36 +1,51 @@
 class Solution {
-private:
-    int d;
-    string s;
-    int memo[11][11][11][2];
+    
+    int dp[11][11][2][11];
+    
+    int getCount(string &str, int width, int d, int pos = 0, int tight = 1, int count = 0)
+    {
+        if(pos == width)
+            return count;
+        
+        if(dp[width][pos][tight][count]!=-1)
+            return dp[width][pos][tight][count];
+        
+        int res = 0;
+        
+        if(tight)
+        {
+            int start = (pos == 0) ? 1 : 0;
+            for(int digit = start; digit <= str[pos] - '0'; digit++)
+                res += getCount(str, width, d, pos + 1, (digit < (str[pos] - '0')) ? 0 : 1, count + (digit == d));
+            
+        }
+        else
+        {
+            int start = (pos == 0) ? 1 : 0;
+            for(int digit = start; digit <= 9; digit++)
+                res += getCount(str, width, d, pos + 1, 0, count + (digit == d));
+        }
+        
+        return dp[width][pos][tight][count] = res;
+    }
+    
+    int digitsCountHelper(int d, int num)
+    {
+        string str = to_string(num);
+        int digitCount = 0;
+        
+        memset(dp, -1, sizeof(dp));
+        
+        for(int width = 1; width <= str.length(); width++)
+            digitCount += getCount(str, width, d, 0, (width < str.length()) ? 0 : 1);
+        
+        return digitCount;
+    }
+    
 public:
     int digitsCount(int d, int low, int high) {
-        this->d = d;
-        int ans = num_of_digits(high) - num_of_digits(low  - 1);
-        return ans;
-    }
-    
-    int num_of_digits(int n){
-        if(n == 0) return 0;
-        s = to_string(n);
-        memset(memo, -1, sizeof(memo));
-        int res = 0;
-        for(int width = 0; width <= s.size(); width++) res += dfs(0, width, 0, width < s.size());
-        return res;
-    }
-    
-    int dfs(int idx, int width, int cnt = 0, bool smaller = false){
-        if(idx == width) return cnt;
-        if(memo[idx][width][cnt][smaller] >= 0) return memo[idx][width][cnt][smaller];
-        int res = 0;
-        if(smaller){
-            int min_digit = idx == 0 ? 1 : 0;
-            for(int digit = min_digit; digit < 10; digit++) res += dfs(idx + 1, width, cnt + (digit == d), true);
-        }else{
-            int min_digit = idx == 0 ? 1 : 0;
-            int max_digit = s[idx] - '0';
-            for(int digit = min_digit; digit <= max_digit; digit++) res += dfs(idx + 1, width, cnt + (digit == d), digit < max_digit);
-        }
-        return memo[idx][width][cnt][smaller] = res;
+        
+        return digitsCountHelper(d, high) - digitsCountHelper(d, low - 1);
+        
     }
 };
