@@ -11,7 +11,7 @@
  */
 class Solution
 {
-    map<TreeNode *, int> dp;
+    unordered_map<TreeNode *, int> dp;
     
     public:
         int rob(TreeNode *root)
