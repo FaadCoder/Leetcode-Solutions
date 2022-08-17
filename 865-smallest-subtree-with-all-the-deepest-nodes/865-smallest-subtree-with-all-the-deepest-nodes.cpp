@@ -10,39 +10,25 @@
  * };
  */
 class Solution {
-    unordered_map<int,int> heightMap;
-    int maxLevel = 0;
-    
-    void populateHeightMap(TreeNode *root, int level = 0)
+    pair<int, TreeNode *> getSubtree(TreeNode *root)
     {
         if(!root)
-            return; 
+            return {0, NULL};
+        auto left = getSubtree(root->left);
+        auto right = getSubtree(root->right);
         
-        heightMap[root->val] = level;
-        maxLevel = max(maxLevel, level);
+        int leftSubtreeDepth = left.first;
+        int rightSubtreeDepth = right.first;
         
-        populateHeightMap(root->left, level + 1);
-        populateHeightMap(root->right, level + 1);
-    }
-    
-    TreeNode *ans;
-    
-    int getSubtree(TreeNode *root, int nodesAtMaxLevel)
-    {
-        if(!root)
-            return 0;
+        TreeNode *leftSubtree = left.second;
+        TreeNode *rightSubtree = right.second;
         
-        int left = getSubtree(root->left, nodesAtMaxLevel);
-        int right = getSubtree(root->right, nodesAtMaxLevel);
-        
-        int currNodes = left + right + (heightMap[root->val] == maxLevel);
-        
-        if(currNodes == nodesAtMaxLevel)
-        {
-            ans = root;
-            return 0;
-        }
-        return currNodes;
+        if(leftSubtreeDepth == rightSubtreeDepth)
+            return {leftSubtreeDepth + 1, root};
+        else if(leftSubtreeDepth > rightSubtreeDepth)
+            return {leftSubtreeDepth + 1, leftSubtree};
+        else
+            return {rightSubtreeDepth + 1, rightSubtree};
     }
     
 public:
@@ -50,18 +36,7 @@ public:
         if(!root)
             return root;
         
-        populateHeightMap(root);
-        
-        int nodesAtMaxLevel = 0;
-        
-        for(auto it:heightMap)
-        {
-            nodesAtMaxLevel += (it.second == maxLevel);
-        }
-        
-        
-         getSubtree(root, nodesAtMaxLevel);
-        return ans;
+        return getSubtree(root).second;
         
     }
 };
