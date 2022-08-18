@@ -1,29 +1,20 @@
 class Solution {
 public:
     int minSetSize(vector<int>& arr) {
-        unordered_map<int, int> freqHashMap;
+        int n = arr.size();
+        unordered_map<int, int> cnt;
+        for (int x : arr) ++cnt[x];
+
+        vector<int> counting(n + 1);
+        for (auto [_, freq] : cnt) ++counting[freq];
         
-        int totalElements = arr.size();
-        
-        for(int num:arr)
-            freqHashMap[num]++;
-        
-        priority_queue<int> maxHeap;
-        
-        for(auto it:freqHashMap)
-            maxHeap.push(it.second);
-        
-        int elementsRemoved = 0;
-        
-        while(!maxHeap.empty())
-        {
-            totalElements -= maxHeap.top();
-            elementsRemoved++;
-            maxHeap.pop();
-            if(totalElements <= arr.size()/2)
-                break;
+        int ans = 0, removed = 0, half = n / 2, freq = n;
+        while (removed < half) {
+            ans += 1;
+            while (counting[freq] == 0) --freq;
+            removed += freq;
+            --counting[freq];
         }
-        
-        return elementsRemoved;
+        return ans;
     }
 };
