@@ -9,12 +9,12 @@ public:
         
         for(int end = 0; end < nums.size(); end++)
         {
-            while(start<end and orderedSet.size() and (abs(*orderedSet.begin() - nums[end]) > limit or abs(*orderedSet.rbegin() - nums[end]) > limit))
+            orderedSet.insert(nums[end]);
+            while(orderedSet.size() and abs(*orderedSet.begin() - *orderedSet.rbegin()) > limit)
             {
                 orderedSet.erase(orderedSet.find(nums[start]));
                 start+=1;
             }
-            orderedSet.insert(nums[end]);
             len = max(len, end - start + 1);
         }
         
