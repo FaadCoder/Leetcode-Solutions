@@ -13,21 +13,26 @@ public:
         unordered_map<int,int> subsequence;
         
         // Step 3: try to form subsequence from each num
-        
         for(int num:nums)
         {
             // if the num is already visited/processed before
             if(freq[num]==0)
                 continue;
-            else if(subsequence[num-1]>0)
+            
+            // If we have some sequence ending at num - 1 then we add our current num to the sequence
+            if(subsequence[num-1] > 0)
             {
+                // Because one of the sequence is now ending at num
                 subsequence[num]++;
                 subsequence[num-1]--;
             }
-            else if(freq[num+1]>0 and freq[num+2]>0)
+            else if(freq[num+1]>0 and freq[num+2]>0) // Lets make one sequence starting from current num
             {
+                // We have used num, num + 1, num + 2 in the sequence so decrement their frequency
                 freq[num+2]--;
                 freq[num+1]--;
+                
+                // Because new Sequence will be ending at num + 2 (i.e, num, num+1, num+2)
                 subsequence[num+2]++;
             }
             else
