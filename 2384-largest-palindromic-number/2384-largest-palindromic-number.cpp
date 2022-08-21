@@ -1,28 +1,27 @@
-class Solution {
-public:
-    string largestPalindromic(string num) {
-        vector<int> cnt(10);
-        for (char c: num) {
-            cnt[c - '0']++;
-        }
-        
-        string res1, res2;
-        for (int i: num) {
-            for (int j = 9; j >= 0; j--)  {
-                if (cnt[j] > 1 && (j > 0 || res1.size())) {
-                    res1.push_back('0' + j);
-                    res2.push_back('0' + j);
-                    cnt[j] -= 2;
-                    break;
+class Solution
+{
+    public:
+        string largestPalindromic(string s)
+        {
+            vector<int> v(10);
+            for (char c: s) v[c - '0']++;
+            string ans;
+            int single = -1;
+            for (int i = 9; i >= 0; i--)
+            {
+                if (ans.empty() && i == 0) continue;
+                while (v[i] > 1)
+                {
+                    ans.push_back(i + '0');
+                    v[i] -= 2;
                 }
+                if (v[i] == 1 && single == -1) single = i;
             }
+            string res = string(ans.rbegin(), ans.rend());
+            if (ans.empty() && single == -1) return "0";
+            if (single != -1)
+                ans.push_back(single + '0');
+            ans += res;
+            return ans;
         }
-        for (int i = 9; i >= 0; i--) {
-            if (cnt[i]) {
-                res1 += '0' + i; break;
-            }
-        }
-        reverse(begin(res2), end(res2));
-        return res1 + res2;
-    }
 };
