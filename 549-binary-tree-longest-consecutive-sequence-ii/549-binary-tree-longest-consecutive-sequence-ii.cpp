@@ -6,6 +6,7 @@ class Solution {
     {
         if(!root)
             return {0,0};
+        
         int increment = 1, decrement = 1;
         
         if(root->left)
