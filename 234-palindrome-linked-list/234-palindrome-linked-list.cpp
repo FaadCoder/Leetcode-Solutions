@@ -10,7 +10,7 @@
  */
 class Solution {
     
-    ListNode *reverseList(ListNode *start)
+    ListNode *getReverseList(ListNode *start)
     {
         ListNode *curr = start;
         ListNode *prev = NULL;
@@ -27,10 +27,10 @@ class Solution {
         return prev;
     }
     
-    bool areEqual(ListNode *firstPart, ListNode *secondPart)
+    bool areEqual(ListNode *firstHalf, ListNode *secondHalf)
     {
-        ListNode *head1 = firstPart;
-        ListNode *head2 = secondPart;
+        ListNode *head1 = firstHalf;
+        ListNode *head2 = secondHalf;
         while(head1 and head2)
         {
             if(head1->val != head2->val)
@@ -44,44 +44,46 @@ class Solution {
        return true;
     }
     
-public:
-    bool isPalindrome(ListNode* head) {
-        if(!head or !head->next)
-            return true;
+    ListNode *getSecondHalf(ListNode *head)
+    {
         
         ListNode *sp = head;
         ListNode *fp = head;
         ListNode *prev = head;
+        ListNode *secondPart = head;
+        
         while(fp and fp->next)
         {
             prev = sp;
             sp = sp->next;
             fp = fp->next->next;
         }
-        ListNode *firstPart = head;
-        ListNode *secondPart = head;
+        
+        prev->next = NULL;
+        
         if(!fp)
         {
-            prev->next = NULL;
             secondPart = sp;
         }
         else
         {
-            prev->next = NULL;
             secondPart = sp->next;
             sp->next = NULL;
         }
-        secondPart = reverseList(secondPart);
+        return secondPart;
+    }
+    
+public:
+    bool isPalindrome(ListNode* head) {
+        if(!head or !head->next)
+            return true;
         
-        return areEqual(firstPart, secondPart);
+        ListNode *firstHalf = head;
+        ListNode *secondHalf = getSecondHalf(head);
+        
+        secondHalf = getReverseList(secondHalf);
+        
+        return areEqual(firstHalf, secondHalf);
     }
 };
 
-/*
-
-1 2
-  s
-    f
-
-
-*/
