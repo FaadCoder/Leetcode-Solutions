@@ -1,6 +1,25 @@
 class Solution {
     int rows, cols;
     
+    void countSort(vector<int> &temp)
+    {
+        int count[101] = {0};
+        
+        for(int num : temp)
+            count[num] += 1;
+        
+        int idx = 0;
+        
+        for(int num = 1; num <= 100; num++)
+        {
+            while(count[num] > 0 )
+            {
+                temp[idx++] = num;
+                count[num] -= 1;
+            }
+        }
+    }
+    
     void sortDiagonal(int row, int col, vector<vector<int>> &mat)
     {
         int startRow = row;
@@ -10,7 +29,7 @@ class Solution {
         while(row<rows and col<cols)
             temp.push_back(mat[row++][col++]);
         
-        sort(temp.begin(), temp.end());
+        countSort(temp);
         
         for(int num : temp)
         {
