@@ -1,25 +1,28 @@
-class Solution
-{
-    public:
-        vector<int> amountPainted(vector<vector < int>> &paint)
+class Solution {
+public:
+    vector<int> amountPainted(vector<vector<int>>& paints) {
+        unordered_map<int, int> last;
+        vector<int> areaPainted;
+        
+        int idx = 0;
+        
+        for(auto paint : paints)
         {
-            vector<int> paintedArea(paint.size(), 0);
-            vector<int> paintTill(50001, 0);
-            int idx = 0;
-            for (auto &paintRange: paint)
+            int start = paint[0];
+            int end = paint[1];
+            int areaCovered = 0;
+            while(start < end)
             {
-                int start = paintRange[0];
-                int end = paintRange[1];
-                while (start < end)
-                {
-                    int nextStart = max(start + 1, paintTill[start]);
-                    if (paintTill[start] == 0)
-                        paintedArea[idx]++;
-                    paintTill[start] = max(paintTill[start], end);
-                    start = nextStart;
-                }
-                idx++;
+                int jump = max(start + 1, last[start]);
+                areaCovered += (last[start] == 0);
+                last[start] = max(last[start], end);
+                start = jump;
             }
-            return paintedArea;
+            
+            areaPainted.push_back(areaCovered);
+  
         }
+        
+        return areaPainted;
+    }
 };
