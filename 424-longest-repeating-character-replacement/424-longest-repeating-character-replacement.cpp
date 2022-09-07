@@ -1,32 +1,27 @@
-class Solution
-{
-    public:
-        int characterReplacement(string s, int k)
+class Solution {
+    
+public:
+    int characterReplacement(string s, int k) {
+        int windowStart = 0;
+        
+        vector<int> frequency(26, 0);
+        
+        int maxFrequency = 0;
+        int len = 0;
+        
+        for(int windowEnd = 0; windowEnd < s.length(); windowEnd++)
         {
-            unordered_map<char, int> frequencyMap;
-            int longestSubstringWithSameLetter = 0;
-            int windowStart = 0;
-            int maxCharacterCount = 0;
-            for (int windowEnd = 0; windowEnd < s.length(); windowEnd++)
+            maxFrequency = max(maxFrequency, ++frequency[s[windowEnd] - 'A']);
+            
+            while(windowEnd - windowStart + 1 - maxFrequency > k)
             {
-                char charAtWindowEnd = s[windowEnd];
-                frequencyMap[charAtWindowEnd]++;
-                maxCharacterCount = max(maxCharacterCount, frequencyMap[charAtWindowEnd]);
-                int windowSize = windowEnd - windowStart + 1;
-
-                while (windowSize - maxCharacterCount > k)
-                {
-                    char charAtWindowStart = s[windowStart];
-                    frequencyMap[charAtWindowStart]--;
-                    maxCharacterCount = max(maxCharacterCount, frequencyMap[charAtWindowEnd]);
-                    windowStart++;
-                    windowSize = windowEnd - windowStart + 1;
-                }
-
-                windowSize = windowEnd - windowStart + 1;
-                longestSubstringWithSameLetter = max(longestSubstringWithSameLetter, windowSize);
+                frequency[s[windowStart] - 'A'] -= 1;
+                windowStart += 1;
             }
-
-            return longestSubstringWithSameLetter;
+            
+            len = max(len, windowEnd - windowStart + 1);
         }
+        
+        return len;
+    }
 };
