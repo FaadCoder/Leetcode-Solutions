@@ -22,13 +22,11 @@ class Solution {
         string leftSubtree = getString(root->left);
         string rightSubtree = getString(root->right);
         
-        string str;
+        string str = to_string(root->val) + "(" + leftSubtree + ")" ;
         
         if(!rightSubtree.empty())
-            str = to_string(root->val) + "(" + leftSubtree + ")" + "(" + rightSubtree + ")";
-        else
-            str = to_string(root->val) + "(" + leftSubtree + ")";
-        
+            str += "(" + rightSubtree + ")";
+
         return str;
     }
     
