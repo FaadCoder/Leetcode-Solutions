@@ -14,17 +14,14 @@ public:
                 power -= tokens[start++];
                 currentScore += 1;
             }
+            else if(currentScore > 0)
+            {
+                currentScore -= 1;
+                power += tokens[end--];    
+            }
             else
             {
-                if(currentScore > 0)
-                {
-                    currentScore -= 1;
-                    power += tokens[end--];    
-                }
-                else
-                {
-                    break;
-                }
+                break;
             }
             
             maxScore = max(maxScore, currentScore);
