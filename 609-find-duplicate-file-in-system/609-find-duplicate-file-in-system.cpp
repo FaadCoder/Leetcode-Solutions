@@ -14,7 +14,15 @@ class Solution {
     
     string getFileContent(string &file)
     {
-        return file.substr(file.find_first_of('('), file.length() - 1);
+        /*
+            3 . t x t ( a b c d )
+            0 1 2 3 4 5 6 7 8 9 10
+        */
+        
+        int openBracketIdx = file.find_first_of('(');
+        int closeBracketIdx = file.find_first_of(')');
+        
+        return file.substr(openBracketIdx + 1, closeBracketIdx - openBracketIdx - 1);
     }
     
     string getFileName(string &file)
@@ -41,7 +49,6 @@ public:
         
         for(string &path : paths)
             addContentMapping(contentToPathMap, path);
-        
         
         vector<vector<string>> duplicateFiles;
         
