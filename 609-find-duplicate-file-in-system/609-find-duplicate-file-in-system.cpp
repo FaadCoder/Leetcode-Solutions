@@ -1,14 +1,38 @@
 class Solution {
     
-    vector<string> getAllComponents(string &path)
+    vector<string> getAllFiles(string &path)
     {
-        vector<string> components;
+        vector<string> files;
         string temp;
         stringstream ss(path);
-        while(getline(ss, temp, ' '))
-            components.push_back(temp);
         
-        return components;
+        while(getline(ss, temp, ' '))
+            files.push_back(temp);
+        
+        return files;
+    }
+    
+    string getFileContent(string &file)
+    {
+        return file.substr(file.find_first_of('('), file.length() - 1);
+    }
+    
+    string getFileName(string &file)
+    {
+        return file.substr(0, file.find_first_of('('));
+    }
+    
+    void addContentMapping(unordered_map<string, vector<string>> &contentToPathMap, string &path)
+    {
+        vector<string> files = getAllFiles(path);
+        string rootName = files[0];
+
+        for(int idx = 1; idx < files.size(); idx++)
+        {
+            string content = getFileContent(files[idx]);
+            string fileName = getFileName(files[idx]);
+            contentToPathMap[content].push_back(rootName + "/" + fileName);
+        }
     }
     
 public:
@@ -16,24 +40,15 @@ public:
         unordered_map<string, vector<string>> contentToPathMap;
         
         for(string &path : paths)
-        {
-            vector<string> components = getAllComponents(path);
-            string currentPath = components[0];
-            
-            for(int idx = 1; idx < components.size(); idx++)
-            {
-                string content = components[idx].substr(components[idx].find_first_of('('), components[idx].length() - 1);
-                string fileName = components[idx].substr(0, components[idx].find_first_of('('));
-                contentToPathMap[content].push_back(currentPath + "/" + fileName);
-            }
-        }
+            addContentMapping(contentToPathMap, path);
         
-        vector<vector<string>> ans;
+        
+        vector<vector<string>> duplicateFiles;
         
         for(auto it : contentToPathMap)
             if(it.second.size() > 1)
-                ans.push_back(it.second);
+                duplicateFiles.push_back(it.second);
         
-        return ans;
+        return duplicateFiles;
     }
 };
