@@ -1,26 +1,28 @@
-class Solution {
-public:
-    int findMaxConsecutiveOnes(vector<int>& nums) {
-        int numberOfZerosFlipped = 0;
-        int runningSum = 0;
-        int maxConsecutiveOnes = 0;
-        int start = 0;
-        for(int end = 0; end < nums.size(); end++)
+class Solution
+{
+    public:
+        int findMaxConsecutiveOnes(vector<int> &nums)
         {
-            runningSum += 1;
-            numberOfZerosFlipped += (nums[end] == 0);
-            
-            while(numberOfZerosFlipped > 1 and start <= end)
+            int numberOfZerosFlipped = 0;
+            int runningSum = 0;
+            int maxConsecutiveOnes = 0;
+            int windowStart = 0;
+            for (int windowEnd = 0; windowEnd < nums.size(); windowEnd++)
             {
-                if(nums[start] == 0)
-                    numberOfZerosFlipped -= 1;
-                runningSum -= 1;
-                start+=1;
+                runningSum += 1;
+                numberOfZerosFlipped += (nums[windowEnd] == 0);
+
+                while (numberOfZerosFlipped > 1 and windowStart <= windowEnd)
+                {
+                    if (nums[windowStart] == 0)
+                        numberOfZerosFlipped -= 1;
+                    runningSum -= 1;
+                    windowStart += 1;
+                }
+
+                maxConsecutiveOnes = max(maxConsecutiveOnes, runningSum);
             }
-            
-            maxConsecutiveOnes = max(maxConsecutiveOnes, runningSum);
+
+            return maxConsecutiveOnes;
         }
-        
-        return maxConsecutiveOnes;
-    }
 };
