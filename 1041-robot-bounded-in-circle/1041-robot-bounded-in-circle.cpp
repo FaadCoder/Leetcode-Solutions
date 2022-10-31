@@ -61,6 +61,6 @@ class Solution
                     turnRight(currentDirection);
             }
 
-            return (dirX == 0 and dirY == 0) or(currentDirection != North);
+            return ((dirX == 0 and dirY == 0) or (currentDirection != North));
         }
 };
