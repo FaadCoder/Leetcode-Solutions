@@ -26,7 +26,7 @@ class Solution
         currentDirection = directions[(currentDirection + 1) % 4];
     }
 
-    void move(Direction direction, int &dirX, int &dirY)
+    void goStraight(Direction direction, int &dirX, int &dirY)
     {
         switch (direction)
         {
@@ -54,7 +54,7 @@ class Solution
             for (char &ch: instructions)
             {
                 if (ch == 'G')
-                    move(currentDirection, dirX, dirY);
+                    goStraight(currentDirection, dirX, dirY);
                 else if (ch == 'L')
                     turnLeft(currentDirection);
                 else
